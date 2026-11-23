@@ -1,0 +1,187 @@
+<!doctype html>
+<html><head><meta name="robots" content="noindex,nofollow"><!--cfr-boot-->
+<style>
+html{box-sizing:border-box;padding:8px 2px;background:var(--background);color:var(--foreground);font-family:var(--font-sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overflow:hidden;scrollbar-width:none}
+html::-webkit-scrollbar{display:none}body{margin:0}code,kbd,pre,samp{font-family:var(--font-mono)}
+:where(:focus-visible){outline:2px solid var(--ring)}
+</style>
+<script>
+(function(){
+  var THEMES=[{"id":"t3-code","label":"T3 Code","light":{"--background":"#fcfcfc","--foreground":"#27272a","--muted":"#fafafa","--muted-foreground":"#71717b","--card":"#ffffff","--popover":"#ffffff","--popover-foreground":"#27272a","--secondary":"#fafafa","--border":"#e4e4e7","--input":"#d4d4d8","--ring":"#1b4ed8","--accent":"#1b4ed8","--accent-foreground":"#ffffff","--accent-surface":"#f4f4f5","--destructive":"#fb2c36","--warning":"#fe9a00","--code-background":"#ffffff","--code-foreground":"#27272a","--chart-1":"#1b4ed8","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"#0a0a0a","--foreground":"#f5f5f5","--muted":"#111111","--muted-foreground":"#818181","--card":"#111111","--popover":"#111111","--popover-foreground":"#f5f5f5","--secondary":"#111111","--border":"#191919","--input":"#1e1e1e","--ring":"#346bf1","--accent":"#346bf1","--accent-foreground":"#ffffff","--accent-surface":"#141414","--destructive":"#fb414a","--warning":"#fe9a00","--code-background":"#111111","--code-foreground":"#f5f5f5","--chart-1":"#346bf1","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"t3-chat","label":"T3 Chat","light":{"--background":"oklch(0.982446 0.010114 325.653)","--foreground":"oklch(0.325698 0.116116 325.037)","--muted":"oklch(0.802407 0.090963 345.892)","--muted-foreground":"oklch(0.428932 0.163929 354.332)","--card":"oklch(0.971835 0.012884 321.894)","--popover":"oklch(1 0 0)","--popover-foreground":"oklch(0.325698 0.116116 325.037)","--secondary":"oklch(0.869588 0.06751 334.899)","--border":"oklch(0.923531 0.021247 328.096)","--input":"oklch(0.851713 0.055822 336.6)","--ring":"oklch(0.591646 0.217985 0.584)","--accent":"oklch(0.591646 0.217985 0.584)","--accent-foreground":"oklch(1 0 0)","--accent-surface":"oklch(0.939552 0.024286 321.664)","--destructive":"oklch(0.627117 0.248974 7.734)","--warning":"oklch(0.76859 0.164659 70.08)","--code-background":"oklch(0.953855 0.019695 315.668)","--code-foreground":"oklch(0.445128 0.13005 307.026)","--chart-1":"oklch(0.591646 0.217985 0.584)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.22813 0.020366 307.469)","--foreground":"oklch(0.980735 0.004092 301.426)","--muted":"oklch(0.360924 0.021469 316.83)","--muted-foreground":"oklch(0.880303 0.03077 342.696)","--card":"oklch(0.267101 0.02016 311.799)","--popover":"oklch(0.154761 0.01316 338.901)","--popover-foreground":"oklch(0.980735 0.004092 301.426)","--secondary":"oklch(0.313674 0.030572 310.061)","--border":"oklch(0.266943 0.015262 302.425)","--input":"oklch(0.266817 0.02897 344.461)","--ring":"oklch(0.591646 0.217985 0.584)","--accent":"oklch(0.460685 0.185347 4.099)","--accent-foreground":"oklch(0.901233 0.057189 343.694)","--accent-surface":"oklch(0.364912 0.050794 308.491)","--destructive":"oklch(0.458704 0.169677 3.815)","--warning":"oklch(0.76859 0.164659 70.08)","--code-background":"oklch(0.22813 0.020366 307.469)","--code-foreground":"oklch(0.848703 0.064239 306.645)","--chart-1":"oklch(0.460685 0.185347 4.099)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"grove","label":"Grove","light":{"--background":"oklch(0.972369 0.005497 157.15)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.945455 0.012308 162.879)","--muted-foreground":"oklch(0.527266 0.012309 320.683)","--card":"oklch(0.972369 0.005497 157.15)","--popover":"oklch(0.932695 0.003778 160.944)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.936464 0.014601 163.554)","--border":"oklch(0.864831 0.01312 167.255)","--input":"oklch(0.829746 0.016084 168.234)","--ring":"oklch(0.523295 0.112292 158.089)","--accent":"oklch(0.523295 0.112292 158.089)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.909438 0.021521 164.612)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.955888 0.004783 158.391)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.523295 0.112292 158.089)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.260865 0.02152 162.75)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.339728 0.039456 160.274)","--muted-foreground":"oklch(0.715427 0.010896 171.428)","--card":"oklch(0.260865 0.02152 162.75)","--popover":"oklch(0.411828 0.014378 166.627)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.380487 0.048313 159.608)","--border":"oklch(0.457475 0.044046 160.971)","--input":"oklch(0.519849 0.049896 160.863)","--ring":"oklch(0.796228 0.133058 157.319)","--accent":"oklch(0.796228 0.133058 157.319)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.437021 0.060312 158.962)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.312979 0.018942 164.082)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.796228 0.133058 157.319)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"ocean","label":"Ocean","light":{"--background":"oklch(0.974199 0.002856 241.597)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.948004 0.009649 241.695)","--muted-foreground":"oklch(0.528741 0.01828 313.823)","--card":"oklch(0.974199 0.002856 241.597)","--popover":"oklch(0.934442 0.003181 269.1)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.939254 0.01193 241.729)","--border":"oklch(0.867646 0.013482 252.362)","--input":"oklch(0.832939 0.017389 252.598)","--ring":"oklch(0.536684 0.120219 247.01)","--accent":"oklch(0.536684 0.120219 247.01)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.91295 0.018827 241.836)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.957684 0.002906 253.68)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.536684 0.120219 247.01)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.242641 0.024125 250.573)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.319287 0.036766 246.065)","--muted-foreground":"oklch(0.691936 0.016294 261.588)","--card":"oklch(0.242641 0.024125 250.573)","--popover":"oklch(0.398517 0.018232 255.72)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.358725 0.043145 244.911)","--border":"oklch(0.438653 0.039496 245.44)","--input":"oklch(0.500905 0.043574 244.781)","--ring":"oklch(0.758933 0.105833 241.548)","--accent":"oklch(0.758933 0.105833 241.548)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.413315 0.051874 243.855)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.29661 0.021883 251.968)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.758933 0.105833 241.548)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"ember","label":"Ember","light":{"--background":"oklch(0.976527 0.002685 60.725)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.950842 0.009273 51.528)","--muted-foreground":"oklch(0.530413 0.018453 341.181)","--card":"oklch(0.976527 0.002685 60.725)","--popover":"oklch(0.936659 0.002879 29.96)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.942267 0.01151 50.785)","--border":"oklch(0.870631 0.013204 39.431)","--input":"oklch(0.836213 0.017153 38.661)","--ring":"oklch(0.552831 0.129438 44.656)","--accent":"oklch(0.552831 0.129438 44.656)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.916502 0.01832 49.597)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.959965 0.002668 47.512)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.552831 0.129438 44.656)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.245899 0.019144 42.044)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.322144 0.03574 48.309)","--muted-foreground":"oklch(0.692479 0.015227 30.963)","--card":"oklch(0.245899 0.019144 42.044)","--popover":"oklch(0.401111 0.014308 34.896)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.361499 0.044052 49.515)","--border":"oklch(0.44099 0.040202 48.807)","--input":"oklch(0.503003 0.045721 49.44)","--ring":"oklch(0.762174 0.124117 52.082)","--accent":"oklch(0.762174 0.124117 52.082)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.416048 0.055354 50.484)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.299662 0.017229 39.973)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.762174 0.124117 52.082)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"iris","label":"Iris","light":{"--background":"oklch(0.976531 0.003855 303.226)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.950194 0.011956 300.733)","--muted-foreground":"oklch(0.529955 0.022319 321.556)","--card":"oklch(0.976531 0.003855 303.226)","--popover":"oklch(0.936665 0.005041 310.132)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.941387 0.014687 300.474)","--border":"oklch(0.869608 0.018226 303.859)","--input":"oklch(0.834773 0.023405 303.676)","--ring":"oklch(0.525348 0.15373 294.176)","--accent":"oklch(0.525348 0.15373 294.176)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.914882 0.022965 299.986)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.95997 0.004338 306.542)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.525348 0.15373 294.176)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.225975 0.031062 293.741)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.291515 0.05276 294.209)","--muted-foreground":"oklch(0.663321 0.025932 301.862)","--card":"oklch(0.225975 0.031062 293.741)","--popover":"oklch(0.386739 0.024023 297.509)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.325405 0.063614 294.23)","--border":"oklch(0.40874 0.058536 295.893)","--input":"oklch(0.46756 0.065775 296.265)","--ring":"oklch(0.671712 0.169136 293.929)","--accent":"oklch(0.671712 0.169136 293.929)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.372436 0.07841 294.204)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.281873 0.028308 295.193)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.671712 0.169136 293.929)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}}];
+  var key=(location.hash.slice(1).split("&")[0]||"t3-code.light").split(".");      // "#<theme>.<mode>", then page parameters after "&"
+  var t=THEMES.filter(function(x){return x.id===key[0]})[0]||THEMES[0];
+  var mode=key[1]==="dark"?"dark":"light";
+  var r=document.documentElement,v=t[mode];
+  r.style.colorScheme=mode;
+  for(var n in v)r.style.setProperty(n,v[n]);
+  r.style.setProperty("--radius","0.625rem");
+  r.style.setProperty("--font-sans",'-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif');
+  r.style.setProperty("--font-mono",'"SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace');
+  addEventListener("hashchange",function(){location.reload()});
+  // a page may set window.__mdFs while it is full screen (the replay pages do): then the frame's size is not the page's own,
+  // so no height report and no reload on the width change; __mdFsUntil keeps that going for a moment after leaving
+  function inFs(){return !!window.__mdFs||(window.__mdFsUntil>Date.now())}
+  function post(){
+    if(inFs())return;
+    var h=Math.max(r.scrollHeight,document.body?document.body.scrollHeight+16:0);
+    try{parent.postMessage({mdFrameHeight:Math.ceil(h)},"*")}catch(e){}
+  }
+  try{new ResizeObserver(post).observe(r)}catch(e){}
+  addEventListener("load",post);
+  var w0=innerWidth,timer=0;
+  addEventListener("resize",function(){
+    post();
+    clearTimeout(timer);
+    timer=setTimeout(function(){
+      if(inFs()){w0=innerWidth;return}
+      if(Math.abs(innerWidth-w0)>24)location.reload();
+    },350);
+  });
+})();
+</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aim tracking</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font-sans)}
+.wrap{display:flex;flex-direction:column;gap:26px;padding:4px 0 8px}
+h2{font-size:15px;font-weight:600;margin:0 0 2px}
+h3{font-size:12.5px;font-weight:600;margin:0 0 4px}
+.sub{font-size:12.5px;color:var(--muted-foreground);margin:0 0 10px;line-height:1.45}
+.sub b{color:var(--foreground);font-weight:600}
+svg text{font-family:var(--font-sans)}
+.ax{fill:var(--muted-foreground);font-size:10.5px}
+.lbl{fill:var(--foreground);font-size:11px}
+.grid line{stroke:var(--border);stroke-width:1}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted-foreground);margin:0 0 8px;flex-wrap:wrap;align-items:center}
+.legend i{display:inline-block;width:16px;height:0;border-top:3px solid;margin-right:5px;vertical-align:3px}
+.legend i.d{border-top-style:dashed}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-left:auto}
+.seg button{font:inherit;font-size:11.5px;padding:3px 9px;border:0;background:transparent;color:var(--muted-foreground);cursor:pointer}
+.seg button.on{background:var(--muted);color:var(--foreground);font-weight:600}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+table{border-collapse:collapse;width:100%;font-size:12px;font-variant-numeric:tabular-nums}
+th{font-weight:500;color:var(--muted-foreground);text-align:right;padding:4px 6px;border-bottom:1px solid var(--border);font-size:11px}
+td{padding:5px 6px;text-align:right;border-bottom:1px solid var(--border)}
+th:first-child,td:first-child{text-align:left}
+td i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px}
+.tw{overflow-x:auto}
+#tip{position:fixed;pointer-events:none;z-index:9;background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);border-radius:calc(var(--radius) - 2px);padding:7px 9px;font-size:11.5px;line-height:1.45;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .08s;max-width:270px}
+#tip b{font-weight:600}
+</style></head><body>
+<div id="tip"></div>
+<div class="wrap">
+  <section>
+    <h2>Aim tracking before a swing lands</h2>
+    <p class="sub" id="lede"></p>
+    <div class="legend"><span><i style="border-color:var(--chart-1)"></i>Humans</span><span><i style="border-color:var(--chart-2)"></i>cbot</span>
+      <span><i style="border-color:var(--foreground)"></i>landed hit</span><span><i class="d" style="border-color:var(--foreground)"></i>no hit</span>
+      <span class="seg" id="seg"><button data-m="yaw" class="on">Yaw error</button><button data-m="pitch">Pitch error</button></span></div>
+    <h3>How big the error is</h3>
+    <p class="sub" id="cdf-sub"></p>
+    <div id="cdf"></div>
+  </section>
+  <section>
+    <h2>Error by time before impact</h2>
+    <p class="sub" id="time-sub"></p>
+    <div class="two"><div><h3>Landed hits</h3><div id="t-hit"></div></div><div><h3>Swings that did not land</h3><div id="t-miss"></div></div></div>
+  </section>
+  <section>
+    <h2>The numbers</h2>
+    <p class="sub" id="tab-sub"></p>
+    <div class="tw" id="tab"></div>
+  </section>
+</div>
+<script>
+const A={"t":[-0.4,-0.35,-0.3,-0.25,-0.2,-0.15,-0.1,-0.05,-0.0],"lag":0.21096799999997984,"maxd":232.6464080810547,"g":{"human_hit":{"n":7405,"yaw":[[7.14,15.63,30.02,7355],[7.33,15.97,30.2,7368],[7.51,16.89,31.26,7388],[7.66,17.43,33.12,7398],[7.81,18.15,34.69,7383],[8.36,18.99,37.04,7382],[9.34,20.44,40.27,7385],[9.0,21.59,45.93,7391],[7.76,21.97,50.14,7405]],"pitch":[[0.38,0.84,1.72,7355],[0.4,0.88,1.84,7368],[0.43,0.95,2.09,7388],[0.47,1.04,2.34,7398],[0.51,1.15,2.68,7383],[0.59,1.31,3.19,7382],[0.68,1.52,3.77,7385],[0.84,1.86,4.65,7391],[0.98,2.22,5.49,7405]],"ecdf":[0.0,0.0023,0.0127,0.03,0.0513,0.0802,0.1103,0.1414,0.1765,0.2147,0.2477,0.2822,0.3157,0.3463,0.3727,0.4005,0.4301,0.4596,0.4837,0.5078,0.5336,0.5533,0.5735,0.5923,0.6104,0.6292,0.6436,0.6602,0.674,0.6883,0.7025,0.7179,0.7321,0.743,0.7544,0.7654,0.7761,0.7854,0.7941,0.8043,0.8134,0.8223,0.8312,0.8397,0.847,0.8548,0.8613,0.867,0.8739,0.8798,0.8858,0.8902,0.896,0.9011,0.9056,0.9102,0.9151,0.9195,0.9238,0.9294,0.9327],"pecdf":[0.0,0.1908,0.4242,0.5872,0.6833,0.7417,0.7869,0.8216,0.8435,0.8627,0.8829,0.8986,0.9097,0.9196,0.9273,0.9341,0.9395,0.9446,0.9495,0.9526,0.9571,0.961,0.9638,0.9665,0.9687,0.9698,0.9719,0.9741,0.9756,0.9774,0.9792,0.9804,0.9833,0.9847,0.986,0.9868,0.9873,0.9891,0.9897,0.9905,0.9914,0.9916,0.992,0.9926,0.993,0.9932,0.9939,0.9945,0.9953,0.9962,0.9965,0.9968,0.997,0.9976,0.9978,0.998,0.9981,0.9982,0.9982,0.9984,0.9989,0.9989],"med":18.588408955573613,"medp":1.194711700344243,"w5":0.08021607022282241,"w10":0.24767049291019583,"bias":-2.3110813866532,"pbias":-0.6009528867412257,"dist":140.54684448242188},"human_miss":{"n":11772,"yaw":[[7.92,17.05,31.75,11772],[7.88,17.03,31.3,11772],[7.89,17.24,31.22,11772],[7.8,17.41,31.01,11772],[7.89,17.66,31.78,11772],[8.51,18.73,34.22,11764],[10.14,22.2,40.41,11696],[12.05,26.5,48.35,11664],[14.07,33.15,57.57,11628]],"pitch":[[0.47,0.93,1.86,11772],[0.51,1.03,2.1,11772],[0.55,1.1,2.3,11772],[0.6,1.18,2.56,11772],[0.64,1.23,2.76,11772],[0.68,1.31,3.04,11764],[0.77,1.5,3.43,11696],[0.84,1.66,3.92,11664],[0.88,1.85,4.32,11628]],"ecdf":[0.0,0.001,0.0067,0.0189,0.0358,0.0552,0.0789,0.1054,0.1345,0.1661,0.1998,0.2308,0.2649,0.2967,0.3293,0.3648,0.394,0.4258,0.4555,0.482,0.5119,0.5382,0.5636,0.5868,0.6073,0.6322,0.6555,0.675,0.6916,0.7118,0.7264,0.7396,0.7532,0.7688,0.7819,0.7941,0.8054,0.8158,0.8262,0.8372,0.8452,0.8549,0.8628,0.8688,0.8757,0.8822,0.888,0.8935,0.8982,0.9024,0.9066,0.9112,0.9151,0.9185,0.9224,0.9258,0.9288,0.9316,0.9341,0.9359,0.939],"pecdf":[0.0,0.1486,0.395,0.5855,0.6843,0.7466,0.7862,0.816,0.8413,0.8628,0.8783,0.8943,0.9066,0.9179,0.9256,0.9335,0.941,0.9476,0.9528,0.9574,0.9613,0.9648,0.9689,0.9715,0.9738,0.9758,0.9774,0.9796,0.982,0.9834,0.9845,0.9851,0.9864,0.9878,0.989,0.9901,0.9905,0.9912,0.9918,0.9923,0.9925,0.9931,0.9935,0.9941,0.9945,0.9951,0.9952,0.996,0.9963,0.997,0.9971,0.9974,0.9976,0.9982,0.9986,0.9988,0.9992,0.9992,0.9992,0.9992,0.9992,0.9993],"med":19.589829741542843,"medp":1.2369958553714469,"w5":0.05521576622494054,"w10":0.199796126401631,"bias":-2.6308905136146308,"pbias":-1.0040360420700267,"dist":148.46060943603516},"cbot_hit":{"n":355,"yaw":[[5.15,10.87,19.26,355],[5.2,10.49,19.74,355],[4.67,10.31,20.19,355],[5.05,10.86,21.6,355],[5.25,11.34,22.17,354],[6.04,12.29,25.42,355],[5.64,13.38,29.0,355],[5.35,14.54,32.16,355],[5.53,15.23,36.91,355]],"pitch":[[0.31,0.65,1.39,355],[0.35,0.73,1.49,355],[0.4,0.83,1.68,355],[0.45,0.89,1.73,355],[0.5,1.01,1.91,354],[0.58,1.18,2.25,355],[0.78,1.5,2.77,355],[0.97,1.79,3.72,355],[1.13,2.11,4.59,355]],"ecdf":[0.0,0.0056,0.0197,0.0592,0.1042,0.1549,0.2085,0.2535,0.3014,0.3437,0.3831,0.4479,0.5042,0.5324,0.5662,0.6225,0.6338,0.6732,0.6817,0.7042,0.7099,0.7211,0.7493,0.7577,0.769,0.7803,0.7915,0.8,0.8113,0.8169,0.8254,0.831,0.8366,0.8366,0.8507,0.862,0.8676,0.8704,0.8761,0.8761,0.8761,0.8817,0.8845,0.8901,0.8901,0.893,0.893,0.8958,0.8958,0.8986,0.9042,0.907,0.9155,0.9211,0.9296,0.9324,0.938,0.938,0.9465,0.9493,0.9521],"pecdf":[0.0,0.2169,0.4761,0.6789,0.7775,0.8113,0.8338,0.8592,0.8704,0.8986,0.9183,0.9296,0.9465,0.9493,0.9549,0.9606,0.9662,0.9775,0.9803,0.9831,0.9831,0.9831,0.9859,0.9859,0.9859,0.9859,0.9887,0.9887,0.9887,0.9887,0.9887,0.9887,0.9887,0.9887,0.9915,0.9915,0.9915,0.9915,0.9944,0.9972,0.9972,0.9972,0.9972,0.9972,0.9972,0.9972,0.9972,0.9972,0.9972,0.9972,0.9972,0.9972,0.9972,0.9972,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0],"med":11.897941628280705,"medp":1.055738558863311,"w5":0.15492957746478872,"w10":0.38309859154929576,"bias":-3.340584355402484,"pbias":-0.6734973224614293,"dist":114.95697784423828},"cbot_miss":{"n":782,"yaw":[[4.9,10.68,19.02,781],[4.27,9.09,17.45,782],[3.87,8.03,15.71,782],[3.48,7.94,14.68,782],[3.55,7.88,14.87,782],[3.79,8.29,15.59,782],[4.14,9.22,18.98,781],[4.87,11.31,24.34,778],[6.1,14.11,28.97,775]],"pitch":[[0.32,0.61,1.02,781],[0.39,0.7,1.12,782],[0.45,0.78,1.28,782],[0.52,0.92,1.52,782],[0.63,1.1,1.82,782],[0.72,1.28,2.19,782],[0.83,1.51,2.58,781],[0.83,1.63,3.14,778],[0.79,1.78,3.87,775]],"ecdf":[0.0,0.0102,0.0371,0.0793,0.1394,0.2097,0.2877,0.3606,0.4258,0.4872,0.5384,0.5818,0.6355,0.6714,0.6982,0.7238,0.7558,0.7788,0.7967,0.8107,0.8235,0.8427,0.8568,0.8708,0.8798,0.89,0.899,0.9054,0.9118,0.9143,0.9194,0.922,0.9258,0.9284,0.9322,0.9361,0.9412,0.945,0.9501,0.9514,0.9565,0.9591,0.9616,0.9655,0.968,0.968,0.968,0.9719,0.9719,0.9731,0.9731,0.9744,0.9744,0.9757,0.9757,0.977,0.9783,0.9795,0.9795,0.9795,0.9795],"pecdf":[0.0,0.1829,0.4706,0.6944,0.8159,0.8798,0.9079,0.9309,0.9425,0.9527,0.9591,0.9642,0.968,0.9719,0.9719,0.9719,0.9719,0.9719,0.9731,0.9744,0.9744,0.9757,0.9757,0.9795,0.9808,0.9821,0.9821,0.9821,0.9821,0.9821,0.9821,0.9821,0.9821,0.9821,0.9821,0.9821,0.9821,0.9821,0.9859,0.9859,0.9872,0.9885,0.9885,0.9898,0.9898,0.991,0.991,0.9923,0.9949,0.9974,0.9987,0.9987,0.9987,0.9987,0.9987,0.9987,1.0,1.0,1.0,1.0,1.0,1.0],"med":9.158611549429537,"medp":1.0354024367734098,"w5":0.20971867007672634,"w10":0.5383631713554987,"bias":-1.7667461599135095,"pbias":-0.8093593594816468,"dist":144.9259796142578}},"nfiles":122};
+const NS="http://www.w3.org/2000/svg";
+const fmt=n=>n.toLocaleString("en-US");
+const tip=document.getElementById("tip");
+function showTip(ev,html){tip.innerHTML=html;tip.style.opacity=1;const r=tip.getBoundingClientRect();let x=ev.clientX+14,y=ev.clientY+14;if(x+r.width>innerWidth-6)x=ev.clientX-r.width-14;if(y+r.height>innerHeight-6)y=ev.clientY-r.height-14;tip.style.left=x+"px";tip.style.top=y+"px"}
+function hideTip(){tip.style.opacity=0}
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+function txt(p,x,y,s,cls,anchor){const t=el("text",{x,y,class:cls||"ax","text-anchor":anchor||"start"},p);t.textContent=s;return t}
+const COL={human:"var(--chart-1)",cbot:"var(--chart-2)"},WHO={human:"Humans",cbot:"cbot"};
+let M="yaw";
+const G=A.g,KEYS=[["human","hit"],["human","miss"],["cbot","hit"],["cbot","miss"]];
+const g=(w,k)=>G[w+"_"+k];
+const U=()=>M==="yaw"?"yaw":"pitch";
+function setup(host,h,l,r,t,b){host.innerHTML="";const w=host.clientWidth;const svg=el("svg",{width:w,height:h,viewBox:`0 0 ${w} ${h}`});host.appendChild(svg);return [svg,w]}
+
+function cdf(){
+  const host=document.getElementById("cdf"),H=230,l=38,r=10,t=8,b=26;const [svg,w]=setup(host,H);
+  const xmax=M==="yaw"?60:30,arr=k=>M==="yaw"?k.ecdf:k.pecdf,step=M==="yaw"?1:.5;
+  const X=v=>l+v/xmax*(w-l-r),Y=v=>t+(1-v)*(H-t-b);
+  const gr=el("g",{class:"grid"},svg);
+  [0,.25,.5,.75,1].forEach(v=>{el("line",{x1:l,x2:w-r,y1:Y(v),y2:Y(v)},gr);txt(svg,l-5,Y(v)+3.5,Math.round(v*100)+"%","ax","end")});
+  for(let v=0;v<=xmax;v+=xmax/6)txt(svg,X(v),H-8,Math.round(v*10)/10+"°","ax","middle");
+  KEYS.forEach(([wo,k])=>{const d=g(wo,k),a=arr(d);
+    el("polyline",{points:a.map((p,i)=>X(i*step).toFixed(1)+","+Y(p).toFixed(1)).join(" "),fill:"none",stroke:COL[wo],"stroke-width":2.2,"stroke-dasharray":k==="miss"?"5 4":"none","stroke-linejoin":"round"},svg)});
+  const cur=el("line",{y1:t,y2:H-b,stroke:"var(--muted-foreground)","stroke-width":1,opacity:0},svg);
+  const hit=el("rect",{x:l,y:t,width:w-l-r,height:H-t-b,fill:"transparent"},svg);
+  hit.addEventListener("mousemove",e=>{const rc=svg.getBoundingClientRect();const v=(e.clientX-rc.left-l)/(w-l-r)*xmax;const i=Math.max(0,Math.min(arr(g("human","hit")).length-1,Math.round(v/step)));
+    cur.setAttribute("x1",X(i*step));cur.setAttribute("x2",X(i*step));cur.setAttribute("opacity",1);
+    showTip(e,`<b>${Math.round(i*step*10)/10}° or less</b><br>`+KEYS.map(([wo,k])=>`${WHO[wo]} ${k==="hit"?"hits":"misses"}: <b>${(arr(g(wo,k))[i]*100).toFixed(0)}%</b> of ${fmt(g(wo,k).n)}`).join("<br>"))});
+  hit.addEventListener("mouseleave",()=>{hideTip();cur.setAttribute("opacity",0)});
+  const lab=M==="yaw"?"|yaw error|":"|pitch error|";
+  txt(svg,l+4,t+10,"share of events with a median "+lab+" at or under x","ax");
+}
+
+function timeChart(id,kind){
+  const host=document.getElementById(id),H=210,l=34,r=8,t=8,b=34;const [svg,w]=setup(host,H);
+  const T=A.t,key=U();
+  let ymax=0;["human","cbot"].forEach(wo=>g(wo,kind)[key].forEach(q=>{if(q[2]!=null)ymax=Math.max(ymax,q[2])}));
+  const nice=M==="yaw"?[10,20,30,40,60,80,100]:[1,2,3,5,10,20,30];ymax=nice.find(v=>v>=ymax)||ymax;
+  const X=v=>l+(v+.4)/.4*(w-l-r),Y=v=>t+(1-v/ymax)*(H-t-b);
+  const gr=el("g",{class:"grid"},svg);
+  for(let i=0;i<=4;i++){const v=ymax*i/4;el("line",{x1:l,x2:w-r,y1:Y(v),y2:Y(v)},gr);txt(svg,l-5,Y(v)+3.5,Math.round(v*10)/10+"°","ax","end")}
+  [-.4,-.3,-.2,-.1,0].forEach(v=>txt(svg,X(v),H-18,v===0?"0":v.toFixed(1),"ax","middle"));
+  txt(svg,(l+w-r)/2,H-3,kind==="hit"?"seconds before the hit lands":"seconds before the expected landing (release + "+A.lag.toFixed(2)+" s)","ax","middle");
+  ["human","cbot"].forEach(wo=>{
+    const q=g(wo,kind)[key],pts=q.map((v,i)=>[X(T[i]),v]).filter(p=>p[1][0]!=null);
+    if(pts.length<2)return;
+    const top=pts.map(p=>p[0].toFixed(1)+","+Y(Math.min(p[1][2],ymax)).toFixed(1)),bot=pts.map(p=>p[0].toFixed(1)+","+Y(p[1][0]).toFixed(1)).reverse();
+    el("polygon",{points:top.concat(bot).join(" "),fill:COL[wo],"fill-opacity":.16},svg);
+    el("polyline",{points:pts.map(p=>p[0].toFixed(1)+","+Y(Math.min(p[1][1],ymax)).toFixed(1)).join(" "),fill:"none",stroke:COL[wo],"stroke-width":2.2,"stroke-dasharray":kind==="miss"?"5 4":"none","stroke-linejoin":"round"},svg)});
+  const cur=el("line",{y1:t,y2:H-b,stroke:"var(--muted-foreground)","stroke-width":1,opacity:0},svg);
+  const hit=el("rect",{x:l,y:t,width:w-l-r,height:H-t-b,fill:"transparent"},svg);
+  hit.addEventListener("mousemove",e=>{const rc=svg.getBoundingClientRect();const v=(e.clientX-rc.left-l)/(w-l-r)*.4-.4;let bi=0,bd=9;T.forEach((x,i)=>{if(Math.abs(x-v)<bd){bd=Math.abs(x-v);bi=i}});
+    cur.setAttribute("x1",X(T[bi]));cur.setAttribute("x2",X(T[bi]));cur.setAttribute("opacity",1);
+    showTip(e,`<b>${T[bi].toFixed(2)} s before ${kind==="hit"?"impact":"expected landing"}</b> (|${key} error|)<br>`+["human","cbot"].map(wo=>{const q=g(wo,kind)[key][bi];return `${WHO[wo]}: median <b>${q[1]}°</b>, middle half ${q[0]}–${q[2]}° (n ${fmt(q[3])})`}).join("<br>"))});
+  hit.addEventListener("mouseleave",()=>{hideTip();cur.setAttribute("opacity",0)});
+}
+
+function table(){
+  const rows=KEYS.map(([wo,k])=>{const d=g(wo,k);return `<tr><td><i style="background:${COL[wo]}"></i>${WHO[wo]}, ${k==="hit"?"landed":"no hit"}</td><td>${fmt(d.n)}</td><td>${(M==="yaw"?d.med:d.medp).toFixed(1)}°</td>${M==="yaw"?`<td>${(d.w10*100).toFixed(0)}%</td>`:""}<td>${(M==="yaw"?d.bias:d.pbias).toFixed(1)}°</td><td>${Math.round(d.dist)} cm</td></tr>`}).join("");
+  document.getElementById("tab").innerHTML=`<table><thead><tr><th>Group</th><th>Events</th><th>Median |${U()}|</th>${M==="yaw"?"<th>Within 10°</th>":""}<th>Signed median</th><th>Median distance</th></tr></thead><tbody>${rows}</tbody></table>`;
+  document.getElementById("tab-sub").innerHTML=`Each event is one swing aimed at one opponent; its value is the median over the 0.4 s window. Signed ${M} error is negative when the attacker looks ${M==="yaw"?"left of":"below"} the target. Distance is flat-plane distance to the target when the swing began or landed.`;
+}
+
+// words that follow from the numbers, so a lede stays true when they flip
+const cmpd=(a,b,tol,less,more,same)=>a<b-tol?less:a>b+tol?more:same;
+function text(){
+  const hh=g("human","hit"),hm=g("human","miss"),ch=g("cbot","hit"),cm=g("cbot","miss");
+  const tot=Object.values(G).reduce((a,d)=>a+d.n,0);
+  const lastH=hh.yaw[hh.yaw.length-1][1],firstH=hh.yaw[0][1];
+  const cap=`Full-rate rows only; targets within ${Math.round(A.maxd)} cm (the 95th percentile of hit distance); ${fmt(tot)} events in all from ${A.nfiles} recorder-mod files. "No hit" is a swing that reached its release phase and landed nothing, so it includes parried and blocked swings; "expected landing" is the release start plus the median hit delay (${A.lag.toFixed(2)} s). cbot has ${fmt(ch.n)} hits and ${fmt(cm.n)} misses${(ch.n<300||cm.n<300)?", so read its lines as rough":""}.`;
+  if(M==="yaw"){
+    const sep=hm.med-hh.med;
+    const hv=cmpd(hh.med,hm.med,2,"humans aim <b>tighter on hits than on misses</b>","humans aim <b>looser on hits than on misses</b>","<b>aim does not separate hits from misses</b> for humans");
+    const cb=cmpd(ch.med,hh.med,2,"closer to the target","farther from the target","about as far from the target");
+    const cbm=cmpd(cm.med,ch.med,2,"better aimed than its hits","worse aimed than its hits","aimed about like its hits");
+    const gr=(a,b)=>cmpd(a,b,1,"shrinks","grows","stays flat");
+    document.getElementById("lede").innerHTML=`Where the attacker's camera points, against the bearing to the opponent, during the 0.4 s before a swing lands. A human is looking <b>${hh.med.toFixed(0)}°</b> off the target at the median on a landed hit and <b>${hm.med.toFixed(0)}°</b> on a swing that lands nothing, so ${hv}: ${(hh.w10*100).toFixed(0)}% of hits are within 10° against ${(hm.w10*100).toFixed(0)}% of misses. cbot looks <b>${cb}</b> than humans do (${ch.med.toFixed(0)}° on hits, ${cm.med.toFixed(0)}° on misses, ${(cm.w10*100).toFixed(0)}% of its misses within 10°), and its misses are ${cbm}. Toward impact the human error ${gr(firstH,lastH)} (${firstH.toFixed(0)}° at 0.4 s out, ${lastH.toFixed(0)}° at the hit). ${cap}`;
+    document.getElementById("cdf-sub").innerHTML=`Cumulative share of swings: a curve further up and left means tighter aim. Share within 10°: humans ${(hh.w10*100).toFixed(0)}% on hits and ${(hm.w10*100).toFixed(0)}% on misses, cbot ${(ch.w10*100).toFixed(0)}% and ${(cm.w10*100).toFixed(0)}%.`;
+    document.getElementById("time-sub").innerHTML=`Median |yaw error| with the middle half of events shaded (n at each step in the tooltip). Human hits start at ${firstH.toFixed(0)}° and end at ${lastH.toFixed(0)}°; human misses go from ${hm.yaw[0][1].toFixed(0)}° to ${hm.yaw[hm.yaw.length-1][1].toFixed(0)}°. cbot hits: ${ch.yaw[0][1].toFixed(0)}° to ${ch.yaw[ch.yaw.length-1][1].toFixed(0)}°; cbot misses: ${cm.yaw[0][1].toFixed(0)}° to ${cm.yaw[cm.yaw.length-1][1].toFixed(0)}°.`;
+  }else{
+    document.getElementById("lede").innerHTML=`Pitch against the opponent's head bone: the camera is <b>${hh.medp.toFixed(1)}°</b> off at the median for humans on a landed hit (${hm.medp.toFixed(1)}° on no-hit swings) and <b>${ch.medp.toFixed(1)}°</b> for cbot (${cm.medp.toFixed(1)}° on no-hit swings). At melee range one degree is a couple of centimetres of height. ${cap}`;
+    document.getElementById("cdf-sub").innerHTML=`Cumulative share of swings by |pitch error| (0.5° steps). Share within 2°: humans ${(g("human","hit").pecdf[4]*100).toFixed(0)}% on hits and ${(g("human","miss").pecdf[4]*100).toFixed(0)}% on misses, cbot ${(g("cbot","hit").pecdf[4]*100).toFixed(0)}% and ${(g("cbot","miss").pecdf[4]*100).toFixed(0)}%.`;
+    document.getElementById("time-sub").innerHTML=`Median |pitch error| with the middle half shaded. Human hits go from ${hh.pitch[0][1]}° to ${hh.pitch[hh.pitch.length-1][1]}°, human misses from ${hm.pitch[0][1]}° to ${hm.pitch[hm.pitch.length-1][1]}°.`;
+  }
+}
+
+function render(){cdf();timeChart("t-hit","hit");timeChart("t-miss","miss");table();text()}
+document.getElementById("seg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;M=b.dataset.m;document.querySelectorAll("#seg button").forEach(x=>x.classList.toggle("on",x===b));render()});
+render();
+</script></body></html>

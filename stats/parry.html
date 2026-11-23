@@ -1,0 +1,181 @@
+<!doctype html>
+<html><head><meta name="robots" content="noindex,nofollow"><!--cfr-boot-->
+<style>
+html{box-sizing:border-box;padding:8px 2px;background:var(--background);color:var(--foreground);font-family:var(--font-sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overflow:hidden;scrollbar-width:none}
+html::-webkit-scrollbar{display:none}body{margin:0}code,kbd,pre,samp{font-family:var(--font-mono)}
+:where(:focus-visible){outline:2px solid var(--ring)}
+</style>
+<script>
+(function(){
+  var THEMES=[{"id":"t3-code","label":"T3 Code","light":{"--background":"#fcfcfc","--foreground":"#27272a","--muted":"#fafafa","--muted-foreground":"#71717b","--card":"#ffffff","--popover":"#ffffff","--popover-foreground":"#27272a","--secondary":"#fafafa","--border":"#e4e4e7","--input":"#d4d4d8","--ring":"#1b4ed8","--accent":"#1b4ed8","--accent-foreground":"#ffffff","--accent-surface":"#f4f4f5","--destructive":"#fb2c36","--warning":"#fe9a00","--code-background":"#ffffff","--code-foreground":"#27272a","--chart-1":"#1b4ed8","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"#0a0a0a","--foreground":"#f5f5f5","--muted":"#111111","--muted-foreground":"#818181","--card":"#111111","--popover":"#111111","--popover-foreground":"#f5f5f5","--secondary":"#111111","--border":"#191919","--input":"#1e1e1e","--ring":"#346bf1","--accent":"#346bf1","--accent-foreground":"#ffffff","--accent-surface":"#141414","--destructive":"#fb414a","--warning":"#fe9a00","--code-background":"#111111","--code-foreground":"#f5f5f5","--chart-1":"#346bf1","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"t3-chat","label":"T3 Chat","light":{"--background":"oklch(0.982446 0.010114 325.653)","--foreground":"oklch(0.325698 0.116116 325.037)","--muted":"oklch(0.802407 0.090963 345.892)","--muted-foreground":"oklch(0.428932 0.163929 354.332)","--card":"oklch(0.971835 0.012884 321.894)","--popover":"oklch(1 0 0)","--popover-foreground":"oklch(0.325698 0.116116 325.037)","--secondary":"oklch(0.869588 0.06751 334.899)","--border":"oklch(0.923531 0.021247 328.096)","--input":"oklch(0.851713 0.055822 336.6)","--ring":"oklch(0.591646 0.217985 0.584)","--accent":"oklch(0.591646 0.217985 0.584)","--accent-foreground":"oklch(1 0 0)","--accent-surface":"oklch(0.939552 0.024286 321.664)","--destructive":"oklch(0.627117 0.248974 7.734)","--warning":"oklch(0.76859 0.164659 70.08)","--code-background":"oklch(0.953855 0.019695 315.668)","--code-foreground":"oklch(0.445128 0.13005 307.026)","--chart-1":"oklch(0.591646 0.217985 0.584)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.22813 0.020366 307.469)","--foreground":"oklch(0.980735 0.004092 301.426)","--muted":"oklch(0.360924 0.021469 316.83)","--muted-foreground":"oklch(0.880303 0.03077 342.696)","--card":"oklch(0.267101 0.02016 311.799)","--popover":"oklch(0.154761 0.01316 338.901)","--popover-foreground":"oklch(0.980735 0.004092 301.426)","--secondary":"oklch(0.313674 0.030572 310.061)","--border":"oklch(0.266943 0.015262 302.425)","--input":"oklch(0.266817 0.02897 344.461)","--ring":"oklch(0.591646 0.217985 0.584)","--accent":"oklch(0.460685 0.185347 4.099)","--accent-foreground":"oklch(0.901233 0.057189 343.694)","--accent-surface":"oklch(0.364912 0.050794 308.491)","--destructive":"oklch(0.458704 0.169677 3.815)","--warning":"oklch(0.76859 0.164659 70.08)","--code-background":"oklch(0.22813 0.020366 307.469)","--code-foreground":"oklch(0.848703 0.064239 306.645)","--chart-1":"oklch(0.460685 0.185347 4.099)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"grove","label":"Grove","light":{"--background":"oklch(0.972369 0.005497 157.15)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.945455 0.012308 162.879)","--muted-foreground":"oklch(0.527266 0.012309 320.683)","--card":"oklch(0.972369 0.005497 157.15)","--popover":"oklch(0.932695 0.003778 160.944)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.936464 0.014601 163.554)","--border":"oklch(0.864831 0.01312 167.255)","--input":"oklch(0.829746 0.016084 168.234)","--ring":"oklch(0.523295 0.112292 158.089)","--accent":"oklch(0.523295 0.112292 158.089)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.909438 0.021521 164.612)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.955888 0.004783 158.391)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.523295 0.112292 158.089)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.260865 0.02152 162.75)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.339728 0.039456 160.274)","--muted-foreground":"oklch(0.715427 0.010896 171.428)","--card":"oklch(0.260865 0.02152 162.75)","--popover":"oklch(0.411828 0.014378 166.627)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.380487 0.048313 159.608)","--border":"oklch(0.457475 0.044046 160.971)","--input":"oklch(0.519849 0.049896 160.863)","--ring":"oklch(0.796228 0.133058 157.319)","--accent":"oklch(0.796228 0.133058 157.319)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.437021 0.060312 158.962)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.312979 0.018942 164.082)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.796228 0.133058 157.319)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"ocean","label":"Ocean","light":{"--background":"oklch(0.974199 0.002856 241.597)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.948004 0.009649 241.695)","--muted-foreground":"oklch(0.528741 0.01828 313.823)","--card":"oklch(0.974199 0.002856 241.597)","--popover":"oklch(0.934442 0.003181 269.1)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.939254 0.01193 241.729)","--border":"oklch(0.867646 0.013482 252.362)","--input":"oklch(0.832939 0.017389 252.598)","--ring":"oklch(0.536684 0.120219 247.01)","--accent":"oklch(0.536684 0.120219 247.01)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.91295 0.018827 241.836)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.957684 0.002906 253.68)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.536684 0.120219 247.01)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.242641 0.024125 250.573)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.319287 0.036766 246.065)","--muted-foreground":"oklch(0.691936 0.016294 261.588)","--card":"oklch(0.242641 0.024125 250.573)","--popover":"oklch(0.398517 0.018232 255.72)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.358725 0.043145 244.911)","--border":"oklch(0.438653 0.039496 245.44)","--input":"oklch(0.500905 0.043574 244.781)","--ring":"oklch(0.758933 0.105833 241.548)","--accent":"oklch(0.758933 0.105833 241.548)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.413315 0.051874 243.855)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.29661 0.021883 251.968)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.758933 0.105833 241.548)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"ember","label":"Ember","light":{"--background":"oklch(0.976527 0.002685 60.725)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.950842 0.009273 51.528)","--muted-foreground":"oklch(0.530413 0.018453 341.181)","--card":"oklch(0.976527 0.002685 60.725)","--popover":"oklch(0.936659 0.002879 29.96)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.942267 0.01151 50.785)","--border":"oklch(0.870631 0.013204 39.431)","--input":"oklch(0.836213 0.017153 38.661)","--ring":"oklch(0.552831 0.129438 44.656)","--accent":"oklch(0.552831 0.129438 44.656)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.916502 0.01832 49.597)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.959965 0.002668 47.512)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.552831 0.129438 44.656)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.245899 0.019144 42.044)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.322144 0.03574 48.309)","--muted-foreground":"oklch(0.692479 0.015227 30.963)","--card":"oklch(0.245899 0.019144 42.044)","--popover":"oklch(0.401111 0.014308 34.896)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.361499 0.044052 49.515)","--border":"oklch(0.44099 0.040202 48.807)","--input":"oklch(0.503003 0.045721 49.44)","--ring":"oklch(0.762174 0.124117 52.082)","--accent":"oklch(0.762174 0.124117 52.082)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.416048 0.055354 50.484)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.299662 0.017229 39.973)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.762174 0.124117 52.082)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"iris","label":"Iris","light":{"--background":"oklch(0.976531 0.003855 303.226)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.950194 0.011956 300.733)","--muted-foreground":"oklch(0.529955 0.022319 321.556)","--card":"oklch(0.976531 0.003855 303.226)","--popover":"oklch(0.936665 0.005041 310.132)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.941387 0.014687 300.474)","--border":"oklch(0.869608 0.018226 303.859)","--input":"oklch(0.834773 0.023405 303.676)","--ring":"oklch(0.525348 0.15373 294.176)","--accent":"oklch(0.525348 0.15373 294.176)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.914882 0.022965 299.986)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.95997 0.004338 306.542)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.525348 0.15373 294.176)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.225975 0.031062 293.741)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.291515 0.05276 294.209)","--muted-foreground":"oklch(0.663321 0.025932 301.862)","--card":"oklch(0.225975 0.031062 293.741)","--popover":"oklch(0.386739 0.024023 297.509)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.325405 0.063614 294.23)","--border":"oklch(0.40874 0.058536 295.893)","--input":"oklch(0.46756 0.065775 296.265)","--ring":"oklch(0.671712 0.169136 293.929)","--accent":"oklch(0.671712 0.169136 293.929)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.372436 0.07841 294.204)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.281873 0.028308 295.193)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.671712 0.169136 293.929)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}}];
+  var key=(location.hash.slice(1).split("&")[0]||"t3-code.light").split(".");      // "#<theme>.<mode>", then page parameters after "&"
+  var t=THEMES.filter(function(x){return x.id===key[0]})[0]||THEMES[0];
+  var mode=key[1]==="dark"?"dark":"light";
+  var r=document.documentElement,v=t[mode];
+  r.style.colorScheme=mode;
+  for(var n in v)r.style.setProperty(n,v[n]);
+  r.style.setProperty("--radius","0.625rem");
+  r.style.setProperty("--font-sans",'-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif');
+  r.style.setProperty("--font-mono",'"SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace');
+  addEventListener("hashchange",function(){location.reload()});
+  // a page may set window.__mdFs while it is full screen (the replay pages do): then the frame's size is not the page's own,
+  // so no height report and no reload on the width change; __mdFsUntil keeps that going for a moment after leaving
+  function inFs(){return !!window.__mdFs||(window.__mdFsUntil>Date.now())}
+  function post(){
+    if(inFs())return;
+    var h=Math.max(r.scrollHeight,document.body?document.body.scrollHeight+16:0);
+    try{parent.postMessage({mdFrameHeight:Math.ceil(h)},"*")}catch(e){}
+  }
+  try{new ResizeObserver(post).observe(r)}catch(e){}
+  addEventListener("load",post);
+  var w0=innerWidth,timer=0;
+  addEventListener("resize",function(){
+    post();
+    clearTimeout(timer);
+    timer=setTimeout(function(){
+      if(inFs()){w0=innerWidth;return}
+      if(Math.abs(innerWidth-w0)>24)location.reload();
+    },350);
+  });
+})();
+</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parry timing</title>
+<style>
+:root{--human:var(--chart-1);--bot:var(--chart-2)}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font-sans);color:var(--foreground)}
+.wrap{display:flex;flex-direction:column;gap:28px;padding:4px 0 8px}
+h2{font-size:15px;font-weight:600;margin:0 0 2px}
+.sub{font-size:12.5px;color:var(--muted-foreground);margin:0 0 10px;line-height:1.45}
+.sub b{color:var(--foreground);font-weight:600}
+svg text{font-family:var(--font-sans)}
+.ax{fill:var(--muted-foreground);font-size:10.5px}
+.lbl{fill:var(--foreground);font-size:11.5px}
+.val{fill:var(--muted-foreground);font-size:11px;font-variant-numeric:tabular-nums}
+.grid line{stroke:var(--border);stroke-width:1}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted-foreground);margin:0 0 8px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+#tip{position:fixed;pointer-events:none;z-index:9;background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);border-radius:calc(var(--radius) - 2px);padding:7px 9px;font-size:11.5px;line-height:1.45;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .08s;max-width:260px}
+#tip b{font-weight:600}
+.hit{fill:transparent;cursor:default}
+</style></head><body>
+<div id="tip"></div>
+<div class="wrap">
+  <section>
+    <h2>When people and cbot parry</h2>
+    <p class="sub" id="l1"></p>
+    <div class="legend"><span><i style="background:var(--human)"></i>Humans</span><span><i style="background:var(--bot)"></i>cbot</span></div>
+    <div id="hist"></div>
+  </section>
+  <section>
+    <h2>Median timing by incoming attack</h2>
+    <p class="sub" id="l2"></p>
+    <div class="legend"><span><i style="background:var(--human)"></i>Humans</span><span><i style="background:var(--bot)"></i>cbot</span></div>
+    <div id="moves"></div>
+  </section>
+  <section>
+    <h2>What happens to an incoming attack</h2>
+    <p class="sub" id="l3"></p>
+    <div class="legend"><span><i style="background:var(--human)"></i>Humans</span><span><i style="background:var(--bot)"></i>cbot</span></div>
+    <div id="out"></div>
+  </section>
+</div>
+<script>
+const D={"react":{"human":{"n":11739,"median":671.9969999999194,"p25":601.6445000000026,"p75":750.0,"hist":[169,108,94,98,105,159,181,193,193,109,93,90,167,310,744,1398,2129,1607,1258,804,506,328,341,311,244],"byMove":{"RightStrike":{"n":6469,"med":679.749000000001},"LeftStrike":{"n":3445,"med":679.7789999999964},"Stab":{"n":1253,"med":640.7469999999194},"AltStab":{"n":550,"med":625.1524999999845},"Kick":{"n":22,"med":437.59149999999636}},"median_all_attackers":679.7030000000035,"n_all_attackers":12345,"rel_release_median":109.7870000000043,"rel_n":10147,"windup_median":554.7490000000153,"share_before_release":0.1485168029959594,"share_lt100":0.027004003748189793},"cbot":{"n":927,"median":710.9380000001693,"p25":632.8200000000805,"p75":804.6985000000282,"hist":[9,1,2,1,0,6,1,2,5,2,8,13,16,43,51,86,135,122,103,82,65,49,39,49,37],"byMove":{"RightStrike":{"n":511,"med":695.3739999999016},"LeftStrike":{"n":316,"med":726.5699999999953},"Stab":{"n":85,"med":734.405000000038},"AltStab":{"n":14,"med":785.2020000000124},"Kick":{"n":1,"med":429.6989999999994}},"median_all_attackers":710.9680000000225,"n_all_attackers":1058,"rel_release_median":132.82000000000238,"rel_n":840,"windup_median":562.503999999997,"share_before_release":0.12857142857142856,"share_lt100":0.010787486515641856}},"unmatched":{"human":2810,"cbot":212},"parries":{"human":15155,"cbot":1270},"attacks":{"human":46108,"cbot":2619},"feints":{"human":8493,"cbot":422},"bins":[0,40,80,120,160,200,240,280,320,360,400,440,480,520,560,600,640,680,720,760,800,840,880,920,960,1000],"outcome":{"human":{"hit":5712,"tot":32705,"parried":12532,"neither":14461},"cbot":{"hit":913,"tot":2551,"neither":773,"parried":865}},"labels":["Regular","Combo","Morph","Riposte","Other","Parry"],"trans":{"human":{"Regular":{"Regular":6440,"Combo":2778,"Morph":5050,"Riposte":0,"Other":76,"Parry":4344},"Combo":{"Regular":976,"Combo":1002,"Morph":0,"Riposte":0,"Other":47,"Parry":802},"Morph":{"Regular":1774,"Combo":684,"Morph":0,"Riposte":0,"Other":8,"Parry":672},"Riposte":{"Regular":999,"Combo":1088,"Morph":0,"Riposte":0,"Other":58,"Parry":1060},"Other":{"Regular":14,"Combo":95,"Morph":0,"Riposte":0,"Other":0,"Parry":5},"Parry":{"Regular":3706,"Combo":0,"Morph":0,"Riposte":6649,"Other":0,"Parry":1047}},"cbot":{"Regular":{"Regular":259,"Combo":137,"Morph":230,"Riposte":0,"Other":3,"Parry":197},"Combo":{"Regular":27,"Combo":17,"Morph":0,"Riposte":0,"Other":0,"Parry":9},"Morph":{"Regular":70,"Combo":17,"Morph":0,"Riposte":0,"Other":1,"Parry":21},"Riposte":{"Regular":14,"Combo":33,"Morph":0,"Riposte":0,"Other":2,"Parry":18},"Other":{"Regular":3,"Combo":1,"Morph":0,"Riposte":0,"Other":0,"Parry":0},"Parry":{"Regular":444,"Combo":0,"Morph":0,"Riposte":218,"Other":0,"Parry":109}}},"seq_from":{"human":{"Regular":28236,"Parry":15155,"Morph":5163,"Combo":5791,"Riposte":6720,"Other":198},"cbot":{"Regular":1955,"Parry":1270,"Combo":209,"Morph":231,"Riposte":218,"Other":6}},"seq_next":{"human":{"Regular":18688,"Parry":11402,"Morph":3138,"Combo":2827,"Riposte":3205,"Other":114},"cbot":{"Regular":826,"Parry":771,"Riposte":67,"Other":4,"Morph":109,"Combo":53}},"type_n":{"human":{"Regular":28236,"Morph":5163,"Combo":5791,"Riposte":6720,"Other":198},"cbot":{"Regular":1955,"Combo":209,"Morph":231,"Riposte":218,"Other":6}},"hit_victims":{"known":12789,"unknown":3},"nfiles":120,"overview":{"folder":"E:\\mordnn-data\\server-recordings","files":144,"http_files":122,"hours":20.200136185685793,"range":"Nov 15\u201321, 2026","first_date":"2026-11-15","last_date":"2026-11-21","attacks":{"human":52231,"cbot":6426},"type_share":{"human":{"Combo":0.12574907621910358,"Riposte":0.14330569968026652},"cbot":{"Combo":0.06349206349206349,"Riposte":0.08590102707749767}},"hits_by":{"cbot>human":332,"human>cbot":1347,"stock>human":69,"human>stock":281,"cbot>cbot":175,"human>human":10299,"human>other":3,"stock>stock":246}}};
+const NS="http://www.w3.org/2000/svg";
+const fmt=n=>n.toLocaleString("en-US");
+const pc=(a,b)=>b?(100*a/b).toFixed(0)+"%":"n/a";
+const tip=document.getElementById("tip");
+function showTip(ev,html){tip.innerHTML=html;tip.style.opacity=1;const r=tip.getBoundingClientRect();let x=ev.clientX+14,y=ev.clientY+14;if(x+r.width>innerWidth-6)x=ev.clientX-r.width-14;if(y+r.height>innerHeight-6)y=ev.clientY-r.height-14;tip.style.left=x+"px";tip.style.top=y+"px"}
+function hideTip(){tip.style.opacity=0}
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+function txt(parent,x,y,s,cls,anchor){const t=el("text",{x,y,class:cls||"ax","text-anchor":anchor||"start"},parent);t.textContent=s;return t}
+function hover(node,html){node.addEventListener("mousemove",e=>showTip(e,html));node.addEventListener("mouseleave",hideTip)}
+function svgIn(id,h){const host=document.getElementById(id);host.innerHTML="";const w=host.clientWidth;const s=el("svg",{width:w,height:h,viewBox:`0 0 ${w} ${h}`});host.appendChild(s);return [s,w]}
+function hbar(p,x,y,w,h,fill,op){w=Math.max(w,1);const r=Math.min(4,w,h/2);return el("path",{d:`M${x},${y}h${w-r}a${r},${r} 0 0 1 ${r},${r}v${h-2*r}a${r},${r} 0 0 1 -${r},${r}h-${w-r}z`,fill,"fill-opacity":op==null?1:op},p)}
+function vbar(p,x,y,w,h,fill){h=Math.max(h,0);const r=Math.min(3,w/2,h);return el("path",{d:`M${x},${y+h}v${-(h-r)}a${r},${r} 0 0 1 ${r},${-r}h${w-2*r}a${r},${r} 0 0 1 ${r},${r}v${h-r}z`,fill},p)}
+const ms0=v=>v==null?"n/a":Math.round(v)+" ms";
+
+const R=D.react,H=R.human,B=R.cbot;
+const Hn=Math.max(H.n,1),Bn=Math.max(B.n,1);
+(function(){
+  const dm=(B.median!=null&&H.median!=null)?B.median-H.median:null;
+  const rr=v=>v==null?"n/a":Math.abs(Math.round(v))+" ms "+(v>=0?"after":"before");
+  document.getElementById("l1").innerHTML=
+  `Time from an attacker's windup starting to the defender's parry starting. Humans parry at a median of <b>${ms0(H.median)}</b> (n = ${fmt(H.n)}), cbot at <b>${ms0(B.median)}</b> (n = ${fmt(B.n)})`+
+  (dm==null?". ":`, so cbot is about ${Math.abs(Math.round(dm))} ms ${dm>=0?"slower":"faster"}. `)+
+  `This is parry timing, not pure reaction speed: the median windup is ${ms0(H.windup_median)}, so the typical human parry begins about <b>${rr(H.rel_release_median)} the blow is released</b> (cbot ${rr(B.rel_release_median)}). `+
+  `Parries under 100 ms: humans ${H.share_lt100==null?"n/a":(H.share_lt100*100).toFixed(1)+"%"}, cbot ${B.share_lt100==null?"n/a":(B.share_lt100*100).toFixed(1)+"%"}. `+
+  `Full-rate rows only; attacker is a human within 350 cm; ${fmt(D.unmatched.human||0)} human and ${fmt(D.unmatched.cbot||0)} cbot parries had no attack to answer and are left out.`+
+  (B.n<300?` cbot's sample is small (n = ${fmt(B.n)}), so its curve is rough.`:"");
+})();
+
+(function draw(){
+  const bins=D.bins,nb=bins.length-1;const h=230,L=34,Rr=8,T=18,Bt=34;const [s,w]=svgIn("hist",h);
+  const ph=H.hist.map(v=>v/Hn),pb=B.hist.map(v=>v/Bn);const mx=Math.max(...ph,...pb)*1.08||1;
+  const X=ms=>L+ms/1000*(w-L-Rr),Y=v=>T+(1-v/mx)*(h-T-Bt);
+  const g=el("g",{class:"grid"},s);
+  const step=mx>0.2?0.1:0.05;
+  for(let v=0;v<=mx;v+=step){el("line",{x1:L,x2:w-Rr,y1:Y(v),y2:Y(v)},g);txt(s,L-5,Y(v)+3.5,(v*100).toFixed(0)+"%","ax","end")}
+  for(let ms=0;ms<=1000;ms+=200)txt(s,X(ms),h-18,ms+"","ax","middle");
+  txt(s,L+(w-L-Rr)/2,h-4,"ms from attack start to parry start","ax","middle");
+  const bw=(w-L-Rr)/nb;
+  for(let i=0;i<nb;i++){
+    const x=X(bins[i]);
+    vbar(s,x+1,Y(ph[i]),bw/2-1.5,h-Bt-Y(ph[i]),"var(--human)");
+    vbar(s,x+bw/2+.5,Y(pb[i]),bw/2-1.5,h-Bt-Y(pb[i]),"var(--bot)");
+    hover(el("rect",{x,y:T,width:bw,height:h-T-Bt,class:"hit"},s),`<b>${bins[i]}-${bins[i+1]} ms</b><br>Humans ${(ph[i]*100).toFixed(1)}% (${fmt(H.hist[i])} of ${fmt(H.n)})<br>cbot ${(pb[i]*100).toFixed(1)}% (${fmt(B.hist[i])} of ${fmt(B.n)})`);
+  }
+  // medians
+  [[H.median,"var(--human)","Humans "+ms0(H.median),"end"],[B.median,"var(--bot)","cbot "+ms0(B.median),"start"]].forEach(([m,c,l,a],i)=>{
+    if(m==null)return;
+    // when the two medians sit close together the labels would overlap: put the left one's label to its left, the other to its right
+    const left=(H.median!=null&&B.median!=null)?(m<=Math.min(H.median,B.median)):true;
+    const an=(H.median!=null&&B.median!=null)?(left?"end":"start"):a;
+    el("line",{x1:X(m),x2:X(m),y1:T-4,y2:h-Bt,stroke:c,"stroke-width":1.6,"stroke-dasharray":"4 3"},s);
+    txt(s,X(m)+(an==="end"?-4:4),T+4,l,"lbl",an).setAttribute("style","font-weight:600");
+  });
+})();
+
+(function(){
+  const mv=["RightStrike","LeftStrike","Stab","AltStab"];
+  const hm=mv.map(m=>H.byMove[m].med).filter(v=>v!=null);
+  const span=hm.length>1?Math.round(Math.max(...hm)-Math.min(...hm)):null;
+  const thin=["RightStrike","LeftStrike","Stab","AltStab","Kick"].filter(m=>B.byMove[m].n<30).map(m=>`${m} (n = ${B.byMove[m].n})`);
+  document.getElementById("l2").innerHTML=
+  `Median time from attack start to parry start, split by the incoming attack's move. `+
+  (span!=null?`Humans' medians across slashes, stab and alt stab span <b>${span} ms</b> (${Math.round(Math.min(...hm))} to ${Math.round(Math.max(...hm))} ms). `:"")+
+  (thin.length?`cbot has under 30 parries against ${thin.join(", ")}, so read those as noise (faded bars have n under 30). `:"cbot has 30 or more parries against every move shown. ")+
+  `Same filters as above.`;
+})();
+(function(){
+  const cats=["RightStrike","LeftStrike","Stab","AltStab","Kick"];const rowH=40,T=4;const [s,w]=svgIn("moves",T+cats.length*rowH+20);const L=84,Rr=96;
+  const mx=Math.max(...cats.flatMap(c=>[H.byMove[c].med||0,B.byMove[c].med||0]),1)*1.02;
+  const X=v=>L+v/mx*(w-L-Rr);const g=el("g",{class:"grid"},s);
+  for(let v=0;v<=mx;v+=200){el("line",{x1:X(v),x2:X(v),y1:0,y2:T+cats.length*rowH},g);txt(s,X(v),T+cats.length*rowH+13,v+" ms","ax","middle")}
+  cats.forEach((c,i)=>{const y=T+i*rowH;txt(s,0,y+22,c,"lbl");
+    [[H.byMove[c],"var(--human)","Humans"],[B.byMove[c],"var(--bot)","cbot"]].forEach(([d,fill,who],j)=>{
+      const yy=y+4+j*16;
+      if(d.med==null){txt(s,L+4,yy+11,"no parries","val");return}
+      hbar(s,L,yy,X(d.med)-L,14,fill,d.n<30?.35:1);txt(s,X(d.med)+5,yy+11,Math.round(d.med)+" ms  n="+fmt(d.n),"val");
+      hover(el("rect",{x:L,y:yy-1,width:w-L,height:16,class:"hit"},s),`<b>${who} · ${c}</b><br>median ${Math.round(d.med)} ms<br>n = ${fmt(d.n)} parries`)})});
+})();
+
+const O=D.outcome,Oh=O.human||{tot:0},Ob=O.cbot||{tot:0};
+const og=(o,k)=>o[k]||0;
+(function(){
+  const moe=n=>n?(196*Math.sqrt(.25/n)).toFixed(0):null;
+  document.getElementById("l3").innerHTML=
+  `For every human slash or stab thrown at a defender within 350 cm (the nearest opponent), what the defender did. Humans parry <b>${pc(og(Oh,"parried"),Oh.tot)}</b> of incoming attacks and take a hit on <b>${pc(og(Oh,"hit"),Oh.tot)}</b> (n = ${fmt(Oh.tot)}); cbot parries <b>${pc(og(Ob,"parried"),Ob.tot)}</b> and takes a hit on <b>${pc(og(Ob,"hit"),Ob.tot)}</b> (n = ${fmt(Ob.tot)}). "Neither" covers everything else: a dodge, a chamber or block, a feint, a miss, an attacker flinched or killed first. A parry counts if the defender's parry begins within 1 s of the attack start, a hit if the hit event comes within 1.5 s; whichever came first wins. Full-rate rows only, stock bots left out. With n = ${fmt(Ob.tot)}, cbot's shares carry about ±${moe(Ob.tot)||"?"} points of sampling noise (humans ±${moe(Oh.tot)||"?"}).`;
+})();
+(function(){
+  const cats=[["parried","Parried"],["hit","Hit the defender"],["neither","Neither"]];const rowH=44,T=4;const [s,w]=svgIn("out",T+cats.length*rowH);const L=104,Rr=60;
+  const sh=(o,k)=>o.tot?og(o,k)/o.tot:0;
+  const mx=Math.max(...cats.flatMap(([k])=>[sh(Oh,k),sh(Ob,k)]),1e-9)*1.02;
+  cats.forEach(([k,lab],i)=>{const y=T+i*rowH;txt(s,0,y+24,lab,"lbl");
+    [[Oh,"var(--human)","Humans"],[Ob,"var(--bot)","cbot"]].forEach(([d,fill,who],j)=>{
+      const v=sh(d,k),yy=y+4+j*17;const bw=v/mx*(w-L-Rr);hbar(s,L,yy,bw,15,fill);txt(s,L+bw+5,yy+12,(v*100).toFixed(1)+"%","val");
+      hover(el("rect",{x:L,y:yy-1,width:w-L,height:17,class:"hit"},s),`<b>${who} defending · ${lab}</b><br>${fmt(og(d,k))} of ${fmt(d.tot)} incoming attacks (${(v*100).toFixed(1)}%)`)})});
+})();
+</script></body></html>

@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>cbot Fight Recordings</title>
+<style>
+/* The replay site (replay-site tickets 04-09): one page, routes in the hash.
+     #/                 replays: featured moments, then every session as a card (filters, sorting)
+     #/s/<id>?t=&f=&cam=  a session: its moments, a timeline of the whole session, the viewer (watch.html, two frames: the part
+                        playing and the next one loading)
+     #/players, #/p/<key>  players, one player
+     #/stats, #/stats/<page>  summaries, then every stats page (framed)
+     #/about
+   Data: data/sessions.json, data/players.json, data/<id>/session.json (archive.py). Colours: the theme tokens of themes.json. */
+:root{--background:#fcfcfc;--foreground:#27272a;--muted:#fafafa;--muted-foreground:#71717b;--card:#ffffff;--popover:#ffffff;--popover-foreground:#27272a;--secondary:#fafafa;--border:#e4e4e7;--input:#d4d4d8;--ring:#1b4ed8;--accent:#1b4ed8;--accent-foreground:#ffffff;--accent-surface:#f4f4f5;--destructive:#fb2c36;--warning:#fe9a00;--code-background:#ffffff;--code-foreground:#27272a;--chart-1:#1b4ed8;--chart-2:#0d9488;--chart-3:#d97706;--chart-4:#9333ea;--chart-5:#e11d48;--chart-6:#65a30d;}
+@media (prefers-color-scheme: dark){:root{--background:#0a0a0a;--foreground:#f5f5f5;--muted:#111111;--muted-foreground:#818181;--card:#111111;--popover:#111111;--popover-foreground:#f5f5f5;--secondary:#111111;--border:#191919;--input:#1e1e1e;--ring:#346bf1;--accent:#346bf1;--accent-foreground:#ffffff;--accent-surface:#141414;--destructive:#fb414a;--warning:#fe9a00;--code-background:#111111;--code-foreground:#f5f5f5;--chart-1:#346bf1;--chart-2:#2dd4bf;--chart-3:#fbbf24;--chart-4:#c084fc;--chart-5:#fb7185;--chart-6:#a3e635;color-scheme:dark}}
+:root{--font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;--font-mono:"SF Mono","SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;--radius:0.625rem}
+*{box-sizing:border-box}
+html{background:var(--background)}
+body{margin:0;background:var(--background);color:var(--foreground);font-family:var(--font-sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:where(button,a,input,select,canvas):focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+.wrap{max-width:1640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.narrow{max-width:1100px}
+header.top{position:sticky;top:0;z-index:20;background:var(--background);border-bottom:1px solid var(--border)}
+.bar{display:flex;align-items:center;gap:8px 20px;min-height:54px;flex-wrap:wrap;padding-block:6px}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-weight:650;font-size:15.5px;letter-spacing:-0.01em;white-space:nowrap}
+.brand svg{width:22px;height:22px;color:var(--accent)}
+nav.tabs{display:flex;gap:2px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{flex:none;text-decoration:none;color:var(--muted-foreground);padding:7px 11px;border-radius:8px;font-size:13.5px;white-space:nowrap}
+nav.tabs a:hover{color:var(--foreground);background:var(--muted)}
+nav.tabs a[aria-current="page"]{color:var(--foreground);font-weight:600;background:var(--muted);box-shadow:inset 0 0 0 1px var(--border)}
+nav.tabs a.ext::after{content:"↗";margin-left:4px;font-size:11px;opacity:.7}
+.themeb{position:relative}
+.ib{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--background);cursor:pointer;color:var(--muted-foreground)}
+.ib:hover{color:var(--foreground);background:var(--muted)}
+.ib svg{width:17px;height:17px}
+.pop{position:absolute;right:0;top:40px;background:var(--popover,var(--background));color:var(--popover-foreground,var(--foreground));border:1px solid var(--border);border-radius:var(--radius);padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:grid;gap:10px;z-index:30;min-width:220px}
+.pop[hidden]{display:none}
+.pop .lab{font-size:12px;color:var(--muted-foreground)}
+.sw{display:flex;gap:7px;flex-wrap:wrap}
+.sw button{width:26px;height:26px;border-radius:50%;border:1px solid var(--border);padding:0;cursor:pointer;background:var(--swbg);display:grid;place-items:center}
+.sw button i{width:10px;height:10px;border-radius:50%;background:var(--swac)}
+.sw button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--background),0 0 0 4px var(--accent)}
+.seg{display:flex;border:1px solid var(--border);border-radius:999px;padding:2px;background:var(--muted);width:max-content}
+.seg button{border:0;background:none;color:var(--muted-foreground);font-size:12.5px;padding:3px 11px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--background);color:var(--foreground);box-shadow:0 0 0 1px var(--border)}
+main{padding-block:18px 64px;min-height:70vh}
+h1{font-size:22px;font-weight:680;margin:0;letter-spacing:-0.015em;text-wrap:balance}
+h2{font-size:15.5px;font-weight:640;margin:0 0 10px}
+.lede{color:var(--muted-foreground);margin:4px 0 0;font-size:13.5px;text-wrap:pretty}
+.muted{color:var(--muted-foreground)}
+.num{font-variant-numeric:tabular-nums}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--muted);border:1px solid var(--border);color:var(--muted-foreground);vertical-align:2px;letter-spacing:.01em}
+.badge.ffa{color:var(--chart-1);border-color:color-mix(in srgb,var(--chart-1) 40%,var(--border))}
+.badge.skirmish{color:var(--chart-3);border-color:color-mix(in srgb,var(--chart-3) 40%,var(--border))}
+.sec{margin-top:26px}
+.loading{padding:40px 0;color:var(--muted-foreground)}
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{display:flex;flex-direction:column;text-decoration:none;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--card,var(--background));transition:border-color .12s,transform .12s}
+.card:hover{border-color:var(--accent)}
+.card canvas{display:block;width:100%;aspect-ratio:16/9;background:var(--muted)}
+.cb{padding:10px 12px 12px;display:grid;gap:3px;min-width:0}
+.ct{font-weight:620;font-size:14px;display:flex;align-items:center;gap:7px;min-width:0}
+.ct span.t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cm{font-size:12.5px;color:var(--muted-foreground)}
+.cp{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cs{font-size:12px;color:var(--muted-foreground);display:flex;gap:12px;flex-wrap:wrap}
+.feat{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.feat .card{position:relative}
+.feat .play{position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:6px;background:var(--accent);color:var(--accent-foreground);font-size:12px;font-weight:600;padding:4px 10px 4px 8px;border-radius:999px}
+.feat .play svg{width:13px;height:13px}
+.feat .ct{font-size:15px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
+.filters input[type=search]{flex:1 1 220px;min-width:0;max-width:340px;height:36px;border:1px solid var(--input,var(--border));border-radius:8px;background:var(--background);padding:0 12px}
+.filters select{height:36px;border:1px solid var(--input,var(--border));border-radius:8px;background:var(--background);padding:0 8px;max-width:100%}
+.count{font-size:12.5px;color:var(--muted-foreground);margin-left:auto}
+.empty{padding:28px;border:1px dashed var(--border);border-radius:var(--radius);color:var(--muted-foreground);text-align:center}
+.more{display:block;margin:16px auto 0;border:1px solid var(--border);background:var(--background);border-radius:8px;padding:7px 16px;cursor:pointer}
+.more:hover{background:var(--muted)}
+/* session */
+.crumb{font-size:13px;text-decoration:none;color:var(--muted-foreground)}
+.crumb:hover{color:var(--foreground)}
+.shead{display:flex;align-items:flex-end;gap:12px 20px;flex-wrap:wrap;margin:6px 0 12px}
+.shead .grow{flex:1;min-width:240px}
+.btn{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border:1px solid var(--border);border-radius:8px;background:var(--background);cursor:pointer;font-size:13px;white-space:nowrap}
+.btn:hover{background:var(--muted)}
+.btn svg{width:15px;height:15px}
+.btn.on{border-color:var(--accent);color:var(--accent)}
+.moms{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin}
+.mom{flex:none;display:grid;gap:1px;text-align:left;max-width:260px;border:1px solid var(--border);border-radius:9px;background:var(--background);padding:6px 10px 7px;cursor:pointer}
+.mom:hover{border-color:var(--accent)}
+.mom b{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mom span{font-size:11.5px;color:var(--muted-foreground);display:flex;gap:6px;align-items:center}
+.mom i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.mom.cur{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.tlw{position:relative;border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px 6px;margin-bottom:12px;background:var(--card,var(--background))}
+.tlw canvas{display:block;width:100%;cursor:pointer;touch-action:none}
+.tlk{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted-foreground);margin-top:4px}
+.score{display:flex;gap:6px;flex-wrap:wrap;margin:-4px 0 12px;font-size:12.5px;align-items:center}
+.score .sl{color:var(--muted-foreground);font-size:12px;margin-right:2px}
+.score span.sp{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--border);border-radius:999px;padding:2px 10px 2px 8px;font-variant-numeric:tabular-nums}
+.score span.sp i{width:8px;height:8px;border-radius:50%}
+.score span.sp b{font-weight:600}
+.tlk i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+#tip{position:fixed;pointer-events:none;z-index:50;background:var(--popover,var(--background));color:var(--popover-foreground,var(--foreground));border:1px solid var(--border);border-radius:8px;padding:5px 9px;font-size:12px;box-shadow:0 6px 20px rgba(0,0,0,.15);opacity:0;transition:opacity .08s;max-width:300px}
+.vstage{position:relative}
+.vstage iframe{display:block;width:100%;height:900px;border:0;background:var(--background)}
+.vstage iframe.off{position:absolute;top:0;left:0;visibility:hidden;pointer-events:none}
+.vload{position:absolute;left:50%;top:180px;transform:translateX(-50%);background:var(--popover,var(--background));border:1px solid var(--border);border-radius:999px;padding:6px 14px;font-size:12.5px;z-index:4;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.vload[hidden]{display:none}
+iframe.fsframe{position:fixed!important;inset:0;width:100vw;height:100vh!important;height:100dvh!important;z-index:100;visibility:visible!important}
+html.fslock,html.fslock body{overflow:hidden}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--foreground);color:var(--background);padding:8px 16px;border-radius:999px;font-size:13px;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none}
+/* players */
+table.pt{width:100%;border-collapse:collapse;font-size:13px}
+.pt th,.pt td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+.pt th:first-child,.pt td:first-child{text-align:left}
+.pt th{font-size:12px;font-weight:600;color:var(--muted-foreground);cursor:pointer;user-select:none;background:var(--background)}
+.pt th[aria-sort]{color:var(--foreground)}
+.pt tbody tr{cursor:pointer}
+.pt tbody tr:hover td{background:var(--muted)}
+.pt a{text-decoration:none;font-weight:600}
+.tw{overflow-x:auto}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tile{border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;background:var(--card,var(--background))}
+.tile b{display:block;font-size:22px;font-weight:650;font-variant-numeric:tabular-nums;letter-spacing:-0.01em}
+.tile span{font-size:12px;color:var(--muted-foreground)}
+.bars{display:grid;gap:7px;max-width:560px}
+.brow{display:grid;grid-template-columns:150px 1fr 56px;gap:10px;align-items:center;font-size:13px}
+.brow .tr{height:10px;border-radius:5px;background:var(--muted);overflow:hidden}
+.brow .tr i{display:block;height:100%;background:var(--accent);border-radius:5px}
+.brow .v{text-align:right;color:var(--muted-foreground);font-variant-numeric:tabular-nums}
+.mlist{display:grid;gap:6px;max-width:760px}
+.mrow{display:flex;gap:10px;align-items:center;text-decoration:none;border:1px solid var(--border);border-radius:9px;padding:7px 11px}
+.mrow:hover{border-color:var(--accent)}
+.mrow i{width:9px;height:9px;border-radius:2px;flex:none}
+.mrow b{font-weight:600;font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mrow span{font-size:12px;color:var(--muted-foreground);white-space:nowrap}
+/* stats */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.sc{display:grid;gap:3px;text-decoration:none;border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px}
+.sc:hover{border-color:var(--accent)}
+.sc b{font-size:13.5px;font-weight:620}
+.sc span{font-size:12.5px;color:var(--muted-foreground)}
+.sframe{display:block;width:100%;height:900px;border:0;background:var(--background)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:26px 40px}
+.notes{max-width:72ch}
+.notes h3{font-size:13.5px;font-weight:620;margin:18px 0 6px}
+.notes p,.notes li{font-size:13.5px;color:var(--muted-foreground)}
+.notes b{color:var(--foreground);font-weight:600}
+.notes ul{padding-left:18px;margin:0;display:grid;gap:6px}
+.notes code{font-family:var(--font-mono);font-size:12px;background:var(--muted);padding:1px 4px;border-radius:4px;color:var(--foreground);overflow-wrap:anywhere}
+@media (max-width:640px){h1{font-size:19px}.brand span{display:none}.bar{gap:6px 10px}.brow{grid-template-columns:100px 1fr 48px}.grid{grid-template-columns:1fr}.feat{grid-template-columns:1fr}}
+</style></head><body>
+<header class="top"><div class="wrap bar">
+  <a class="brand" href="#/" aria-label="cbot Fight Recordings, replays"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6"/><path d="m16 16 4 4"/><path d="m19 21 2-2"/><path d="M14.5 6.5 18 3h3v3l-3.5 3.5"/><path d="m5 14 4 4"/><path d="m7 17-3 3"/><path d="m3 19 2 2"/></svg><span>cbot Fight Recordings</span></a>
+  <nav class="tabs" id="nav" aria-label="Sections">
+    <a href="#/" data-r="home">Replays</a>
+    <a href="#/players" data-r="players">Players</a>
+    <a href="#/stats" data-r="stats">Stats</a>
+    <a href="#/about" data-r="about">About</a>
+    <a class="ext" href="https://claude.ai/artifact/Se57VNBFH3cNi4meUV6E2Y" target="_blank" rel="noopener" title="The label audit lives on its own page (its verdicts are stored there)">Label audit</a>
+  </nav>
+  <div class="themeb">
+    <button class="ib" id="themeb" aria-haspopup="true" aria-expanded="false" aria-label="Theme" title="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></button>
+    <div class="pop" id="themep" hidden>
+      <div class="lab">Theme</div><div class="sw" id="sw"></div>
+      <div class="lab">Appearance</div>
+      <div class="seg" id="seg"><button type="button" data-m="system">System</button><button type="button" data-m="light">Light</button><button type="button" data-m="dark">Dark</button></div>
+    </div>
+  </div>
+</div></header>
+<main class="wrap" id="app"><p class="loading">Loading…</p></main>
+<div id="tip"></div><div class="toast" id="toast"></div>
+<template id="notes-t"><div class="notes">
+    <h2>About the data</h2>
+    <p>Everything here comes from the <code>.mdsr</code> server recordings in <code>E:\mordnn-data\server-recordings</code>: 144 files, about 20.2 hours across Nov 15–21, 2026. The 122 files from the recorder mod (<code>-http</code>) carry full fighter rows; the others are older formats. <b>Humans</b> are people, <b>cbot</b> is our bot, and Mordhau's built-in bots are left out of the human-vs-cbot comparisons.</p>
+    <h3>Read these numbers with care</h3>
+    <ul>
+      <li><b>cbot samples are small.</b> The recorder-mod files give 2,619 full-rate cbot attack starts (against 46,108 human), 2,505 cbot swings with a usable tip path (44,819 human), and 368 cbot landed hits on the aim page. Rows with under 30 cbot cases are marked on the pages and mean little.</li>
+      <li><b>Attack stages were inferred:</b> 0 windup, 1 release, 2 recovery. The schema names only release.</li>
+      <li><b>Movement input is plotted as recorded</b> (<code>move_forward</code>, <code>move_right</code>); the footwork grid shows -0.4 to 0.9 and says how many rows fall outside it.</li>
+      <li><b>Feints and parried attacks can be counted</b> from the fighter row's <code>motion_class</code> (<code>BP_FeintedMotion_Comp_C</code> for a cancelled windup, <code>BP_BlockedMotion_Comp_C</code> for a parried attack). The recorder-mod files carry no <code>net_motion_type</code>, so there is no per-motion type field; the transitions page counts feints per attack start from <code>motion_class</code>.</li>
+      <li><b>Crowd sizes are what was recorded:</b> at most 21 fighters and 14 cbots alive in any one tick, so the server page cannot say anything about bigger crowds.</li>
+      <li><b>Kills are rebuilt,</b> not logged: the victim is the fighter whose rows stop at a death, the killer is the last hitter within about 5 s, and a kill counts only when the scoreboard confirms it.</li>
+      <li><b>Timing charts use full-rate rows only.</b> Fighters far from a fight are recorded at about 10 Hz.</li>
+      <li><b>Skirmish and team maps</b> compare against the other team; free-for-all maps against every other fighter.</li>
+    </ul>
+    <h3>Recorder bugs found</h3>
+    <ul>
+      <li><code>death.victim</code> is a synthetic id (60000+), not a player.</li>
+      <li><code>hit.health_after</code> holds the victim's health before the hit.</li>
+      <li><code>hit.weapon</code> is always <code>BP_MorhauCharacter_C</code>; the held weapon is in the fighter row.</li>
+    </ul>
+</div></template>
+<script>
+const THEMES=[{"id":"t3-code","label":"T3 Code","light":{"--background":"#fcfcfc","--foreground":"#27272a","--muted":"#fafafa","--muted-foreground":"#71717b","--card":"#ffffff","--popover":"#ffffff","--popover-foreground":"#27272a","--secondary":"#fafafa","--border":"#e4e4e7","--input":"#d4d4d8","--ring":"#1b4ed8","--accent":"#1b4ed8","--accent-foreground":"#ffffff","--accent-surface":"#f4f4f5","--destructive":"#fb2c36","--warning":"#fe9a00","--code-background":"#ffffff","--code-foreground":"#27272a","--chart-1":"#1b4ed8","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"#0a0a0a","--foreground":"#f5f5f5","--muted":"#111111","--muted-foreground":"#818181","--card":"#111111","--popover":"#111111","--popover-foreground":"#f5f5f5","--secondary":"#111111","--border":"#191919","--input":"#1e1e1e","--ring":"#346bf1","--accent":"#346bf1","--accent-foreground":"#ffffff","--accent-surface":"#141414","--destructive":"#fb414a","--warning":"#fe9a00","--code-background":"#111111","--code-foreground":"#f5f5f5","--chart-1":"#346bf1","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"t3-chat","label":"T3 Chat","light":{"--background":"oklch(0.982446 0.010114 325.653)","--foreground":"oklch(0.325698 0.116116 325.037)","--muted":"oklch(0.802407 0.090963 345.892)","--muted-foreground":"oklch(0.428932 0.163929 354.332)","--card":"oklch(0.971835 0.012884 321.894)","--popover":"oklch(1 0 0)","--popover-foreground":"oklch(0.325698 0.116116 325.037)","--secondary":"oklch(0.869588 0.06751 334.899)","--border":"oklch(0.923531 0.021247 328.096)","--input":"oklch(0.851713 0.055822 336.6)","--ring":"oklch(0.591646 0.217985 0.584)","--accent":"oklch(0.591646 0.217985 0.584)","--accent-foreground":"oklch(1 0 0)","--accent-surface":"oklch(0.939552 0.024286 321.664)","--destructive":"oklch(0.627117 0.248974 7.734)","--warning":"oklch(0.76859 0.164659 70.08)","--code-background":"oklch(0.953855 0.019695 315.668)","--code-foreground":"oklch(0.445128 0.13005 307.026)","--chart-1":"oklch(0.591646 0.217985 0.584)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.22813 0.020366 307.469)","--foreground":"oklch(0.980735 0.004092 301.426)","--muted":"oklch(0.360924 0.021469 316.83)","--muted-foreground":"oklch(0.880303 0.03077 342.696)","--card":"oklch(0.267101 0.02016 311.799)","--popover":"oklch(0.154761 0.01316 338.901)","--popover-foreground":"oklch(0.980735 0.004092 301.426)","--secondary":"oklch(0.313674 0.030572 310.061)","--border":"oklch(0.266943 0.015262 302.425)","--input":"oklch(0.266817 0.02897 344.461)","--ring":"oklch(0.591646 0.217985 0.584)","--accent":"oklch(0.460685 0.185347 4.099)","--accent-foreground":"oklch(0.901233 0.057189 343.694)","--accent-surface":"oklch(0.364912 0.050794 308.491)","--destructive":"oklch(0.458704 0.169677 3.815)","--warning":"oklch(0.76859 0.164659 70.08)","--code-background":"oklch(0.22813 0.020366 307.469)","--code-foreground":"oklch(0.848703 0.064239 306.645)","--chart-1":"oklch(0.460685 0.185347 4.099)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"grove","label":"Grove","light":{"--background":"oklch(0.972369 0.005497 157.15)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.945455 0.012308 162.879)","--muted-foreground":"oklch(0.527266 0.012309 320.683)","--card":"oklch(0.972369 0.005497 157.15)","--popover":"oklch(0.932695 0.003778 160.944)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.936464 0.014601 163.554)","--border":"oklch(0.864831 0.01312 167.255)","--input":"oklch(0.829746 0.016084 168.234)","--ring":"oklch(0.523295 0.112292 158.089)","--accent":"oklch(0.523295 0.112292 158.089)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.909438 0.021521 164.612)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.955888 0.004783 158.391)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.523295 0.112292 158.089)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.260865 0.02152 162.75)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.339728 0.039456 160.274)","--muted-foreground":"oklch(0.715427 0.010896 171.428)","--card":"oklch(0.260865 0.02152 162.75)","--popover":"oklch(0.411828 0.014378 166.627)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.380487 0.048313 159.608)","--border":"oklch(0.457475 0.044046 160.971)","--input":"oklch(0.519849 0.049896 160.863)","--ring":"oklch(0.796228 0.133058 157.319)","--accent":"oklch(0.796228 0.133058 157.319)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.437021 0.060312 158.962)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.312979 0.018942 164.082)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.796228 0.133058 157.319)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"ocean","label":"Ocean","light":{"--background":"oklch(0.974199 0.002856 241.597)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.948004 0.009649 241.695)","--muted-foreground":"oklch(0.528741 0.01828 313.823)","--card":"oklch(0.974199 0.002856 241.597)","--popover":"oklch(0.934442 0.003181 269.1)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.939254 0.01193 241.729)","--border":"oklch(0.867646 0.013482 252.362)","--input":"oklch(0.832939 0.017389 252.598)","--ring":"oklch(0.536684 0.120219 247.01)","--accent":"oklch(0.536684 0.120219 247.01)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.91295 0.018827 241.836)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.957684 0.002906 253.68)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.536684 0.120219 247.01)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.242641 0.024125 250.573)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.319287 0.036766 246.065)","--muted-foreground":"oklch(0.691936 0.016294 261.588)","--card":"oklch(0.242641 0.024125 250.573)","--popover":"oklch(0.398517 0.018232 255.72)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.358725 0.043145 244.911)","--border":"oklch(0.438653 0.039496 245.44)","--input":"oklch(0.500905 0.043574 244.781)","--ring":"oklch(0.758933 0.105833 241.548)","--accent":"oklch(0.758933 0.105833 241.548)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.413315 0.051874 243.855)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.29661 0.021883 251.968)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.758933 0.105833 241.548)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"ember","label":"Ember","light":{"--background":"oklch(0.976527 0.002685 60.725)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.950842 0.009273 51.528)","--muted-foreground":"oklch(0.530413 0.018453 341.181)","--card":"oklch(0.976527 0.002685 60.725)","--popover":"oklch(0.936659 0.002879 29.96)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.942267 0.01151 50.785)","--border":"oklch(0.870631 0.013204 39.431)","--input":"oklch(0.836213 0.017153 38.661)","--ring":"oklch(0.552831 0.129438 44.656)","--accent":"oklch(0.552831 0.129438 44.656)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.916502 0.01832 49.597)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.959965 0.002668 47.512)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.552831 0.129438 44.656)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.245899 0.019144 42.044)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.322144 0.03574 48.309)","--muted-foreground":"oklch(0.692479 0.015227 30.963)","--card":"oklch(0.245899 0.019144 42.044)","--popover":"oklch(0.401111 0.014308 34.896)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.361499 0.044052 49.515)","--border":"oklch(0.44099 0.040202 48.807)","--input":"oklch(0.503003 0.045721 49.44)","--ring":"oklch(0.762174 0.124117 52.082)","--accent":"oklch(0.762174 0.124117 52.082)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.416048 0.055354 50.484)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.299662 0.017229 39.973)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.762174 0.124117 52.082)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}},{"id":"iris","label":"Iris","light":{"--background":"oklch(0.976531 0.003855 303.226)","--foreground":"oklch(0.222003 0.03479 328.979)","--muted":"oklch(0.950194 0.011956 300.733)","--muted-foreground":"oklch(0.529955 0.022319 321.556)","--card":"oklch(0.976531 0.003855 303.226)","--popover":"oklch(0.936665 0.005041 310.132)","--popover-foreground":"oklch(0.222003 0.03479 328.979)","--secondary":"oklch(0.941387 0.014687 300.474)","--border":"oklch(0.869608 0.018226 303.859)","--input":"oklch(0.834773 0.023405 303.676)","--ring":"oklch(0.525348 0.15373 294.176)","--accent":"oklch(0.525348 0.15373 294.176)","--accent-foreground":"oklch(0.990339 0.008411 325.64)","--accent-surface":"oklch(0.914882 0.022965 299.986)","--destructive":"oklch(0.637823 0.237287 25.436)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.95997 0.004338 306.542)","--code-foreground":"oklch(0.222003 0.03479 328.979)","--chart-1":"oklch(0.525348 0.15373 294.176)","--chart-2":"#0d9488","--chart-3":"#d97706","--chart-4":"#9333ea","--chart-5":"#e11d48","--chart-6":"#65a30d"},"dark":{"--background":"oklch(0.225975 0.031062 293.741)","--foreground":"oklch(0.990339 0.008411 325.64)","--muted":"oklch(0.291515 0.05276 294.209)","--muted-foreground":"oklch(0.663321 0.025932 301.862)","--card":"oklch(0.225975 0.031062 293.741)","--popover":"oklch(0.386739 0.024023 297.509)","--popover-foreground":"oklch(0.990339 0.008411 325.64)","--secondary":"oklch(0.325405 0.063614 294.23)","--border":"oklch(0.40874 0.058536 295.893)","--input":"oklch(0.46756 0.065775 296.265)","--ring":"oklch(0.671712 0.169136 293.929)","--accent":"oklch(0.671712 0.169136 293.929)","--accent-foreground":"oklch(0.222003 0.03479 328.979)","--accent-surface":"oklch(0.372436 0.07841 294.204)","--destructive":"oklch(0.655108 0.221148 23.473)","--warning":"oklch(0.772406 0.172798 65.367)","--code-background":"oklch(0.281873 0.028308 295.193)","--code-foreground":"oklch(0.990339 0.008411 325.64)","--chart-1":"oklch(0.671712 0.169136 293.929)","--chart-2":"#2dd4bf","--chart-3":"#fbbf24","--chart-4":"#c084fc","--chart-5":"#fb7185","--chart-6":"#a3e635"}}];
+const STATS=[{"id": "overview", "label": "Overview", "group": "Overview", "blurb": "When the recorder ran, what people swing, who hits whom and how the ping looks."}, {"id": "kd", "label": "K/D vs humans", "group": "Combat", "blurb": "Kill/death ratio for humans against humans only, next to the scoreboard K/D."}, {"id": "parry", "label": "Parries", "group": "Combat", "blurb": "When humans and cbot parry, by incoming attack, and what happens to the attack."}, {"id": "transitions", "label": "Transitions", "group": "Combat", "blurb": "What a fighter does next after each move, and where cbot and humans differ most."}, {"id": "swings", "label": "Swings", "group": "Combat", "blurb": "Swing signatures and strike height of humans against cbot, by weapon."}, {"id": "aim", "label": "Aim", "group": "Combat", "blurb": "How far off the aim is in the moments before a swing lands, for hits and for swings that missed."}, {"id": "spacing", "label": "Spacing", "group": "Movement", "blurb": "How far apart humans and cbot stand when they swing, and when a hit lands."}, {"id": "footwork", "label": "Footwork", "group": "Movement", "blurb": "Where the feet go: the share of time standing, strafing and backing up."}, {"id": "maps", "label": "Skirmish maps", "group": "Maps & server", "blurb": "Where people fight and where they die on each skirmish map, as heatmaps."}, {"id": "server", "label": "Server load", "group": "Maps & server", "blurb": "Does a crowd slow the server? Tick time by crowd size, with and without cbots."}];      // [{id, label, group, blurb}] of the framed stats pages
+const SITE={"files": 144, "hours": 20.200136185685793, "range": "Nov 15\u201321, 2026", "bin": true};        // {built, files, hours, range}
+const root=document.documentElement, $=id=>document.getElementById(id), app=$("app");
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const IC={play:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>',
+  share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'};
+
+// ===== theme (the same themes as the viewer and the stats pages; frames get "#<theme>.<mode>")
+const mq=matchMedia("(prefers-color-scheme: dark)");
+const TS={theme:store.get("cfr-theme")||"t3-code",mode:store.get("cfr-mode")||"system"};
+if(!THEMES.some(t=>t.id===TS.theme))TS.theme=THEMES[0].id;
+if(!["system","light","dark"].includes(TS.mode))TS.mode="system";
+const resolved=()=>TS.mode!=="system"?TS.mode:(mq.matches?"dark":"light");
+let themeKey="";
+const themeHooks=[];
+function applyTheme(){
+  const t=THEMES.find(x=>x.id===TS.theme)||THEMES[0], m=resolved();
+  for(const [k,v] of Object.entries(t[m]))root.style.setProperty(k,v);
+  root.style.colorScheme=m;
+  for(const b of document.querySelectorAll("#seg button"))b.setAttribute("aria-pressed",String(b.dataset.m===TS.mode));
+  const host=$("sw");host.textContent="";
+  for(const x of THEMES){const b=document.createElement("button");b.type="button";b.title=x.label;b.setAttribute("aria-label",x.label+" theme");b.setAttribute("aria-pressed",String(x.id===t.id));
+    b.style.setProperty("--swbg",x[m]["--background"]);b.style.setProperty("--swac",x[m]["--accent"]);b.appendChild(document.createElement("i"));
+    b.onclick=()=>{TS.theme=x.id;store.set("cfr-theme",x.id);applyTheme()};host.appendChild(b);}
+  const k=t.id+"."+m; if(k!==themeKey){ const first=!themeKey; themeKey=k; if(!first) themeHooks.forEach(f=>f()); }
+}
+for(const b of document.querySelectorAll("#seg button"))b.onclick=()=>{TS.mode=b.dataset.m;store.set("cfr-mode",b.dataset.m);applyTheme()};
+mq.addEventListener("change",applyTheme);
+$("themeb").onclick=ev=>{ev.stopPropagation();const p=$("themep");p.hidden=!p.hidden;$("themeb").setAttribute("aria-expanded",String(!p.hidden));};
+document.addEventListener("click",ev=>{if(!ev.target.closest(".themeb")){$("themep").hidden=true;$("themeb").setAttribute("aria-expanded","false");}});
+applyTheme();
+const cssv=n=>getComputedStyle(root).getPropertyValue(n).trim();
+
+// ===== data
+const cache={};
+function getJSON(u){ return cache[u]||(cache[u]=fetch(u).then(r=>{ if(!r.ok) throw new Error(r.status+" "+u); return r.json(); }).catch(e=>{ delete cache[u]; throw e; })); }
+const SESS=()=>getJSON("data/sessions.json"), PLAY=()=>getJSON("data/players.json");
+
+// ===== formatting
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], DAY=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+function when(iso,long){ const d=new Date(iso); return (long?DAY[d.getDay()]+" ":"")+MON[d.getMonth()]+" "+d.getDate()+(long?", "+d.getFullYear():"")+" · "+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2); }
+function dur(s){ s=Math.round(s); if(s<60) return s+" s"; const m=Math.round(s/60); return m<60?m+" min":Math.floor(m/60)+" h "+("0"+m%60).slice(-2)+" min"; }
+const hrs=s=>s>=3600?(s/3600).toFixed(1)+" h":Math.max(1,Math.round(s/60))+" min";
+const clock=s=>{ s=Math.max(0,Math.floor(s)); const h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60; return (h?h+":"+("0"+m).slice(-2):m)+":"+("0"+x).slice(-2); };
+function prettyMap(m){ if(!m||m==="None") return "Unknown map"; let s=m.replace(/^(ffa|skm|hpr)_/i,""); s=s.replace(/RM$/,"").replace(/([a-z])([A-Z])/g,"$1 $2").replace(/_/g," ");
+  return s.split(" ").filter(Boolean).map(w=>w[0].toUpperCase()+w.slice(1)).join(" "); }
+const modeOf=m=>/^ffa/i.test(m)?"FFA":/^skm/i.test(m)?"Skirmish":"Other";
+let MAPDUP=null;      // map names that exist in two modes (Steedie Contraband: FFA and Skirmish) get the mode after them
+const mapLabel=m=>prettyMap(m)+(MAPDUP&&MAPDUP.has(prettyMap(m))?" ("+modeOf(m)+")":"");
+function noteMaps(rows){ const by={}; rows.forEach(r=>{ const p=prettyMap(r.map); (by[p]=by[p]||new Set()).add(r.map); }); MAPDUP=new Set(Object.keys(by).filter(k=>by[k].size>1)); }
+const modeBadge=m=>'<span class="badge '+esc(m.toLowerCase())+'">'+esc(m)+'</span>';
+const KCOL={duel:"--chart-1",fight:"--chart-2",gank:"--warning",multi:"--destructive",pick:"--accent"};
+const KNAME={duel:"Duel",fight:"Team fight",gank:"Gank",multi:"Multi-kill",pick:"Picked"};
+const kc=k=>"var("+(KCOL[k]||"--muted-foreground")+")";
+const plural=(n,w)=>n+" "+w+(n===1?"":"s");
+function names(ps,n){ const h=ps.filter(p=>p.b!=="bot"&&p.n&&p.n.trim()), seen=new Set(), o=[]; for(const p of h){ if(seen.has(p.n)) continue; seen.add(p.n); o.push(p.n); } return o.slice(0,n).join(", ")+(o.length>n?" +"+(o.length-n):""); }
+
+// the card's picture: the session's heat grid (archive.heat) in the accent colour
+function drawHeat(cv,H){
+  const r=cv.getBoundingClientRect(), dpr=devicePixelRatio||1, W=Math.max(1,r.width), Hh=Math.max(1,r.height);
+  cv.width=Math.round(W*dpr); cv.height=Math.round(Hh*dpr); const c=cv.getContext("2d"); c.setTransform(dpr,0,0,dpr,0,0);
+  c.fillStyle=cssv("--muted"); c.fillRect(0,0,W,Hh);
+  if(!H) return;
+  const cs=Math.min(W/H.w,Hh/H.h)*0.92, ox=(W-cs*H.w)/2, oy=(Hh-cs*H.h)/2, ac=cssv("--accent");
+  c.fillStyle=ac;
+  for(let j=0;j<H.h;j++) for(let i=0;i<H.w;i++){ const ch=H.g[j*H.w+i]; if(ch==="."||ch==null) continue; const v=(+ch+1)/10;
+    c.globalAlpha=0.12+0.88*v*v; const pad=cs*0.08; c.beginPath(); c.roundRect?c.roundRect(ox+i*cs+pad,oy+j*cs+pad,cs-2*pad,cs-2*pad,cs*0.25):c.rect(ox+i*cs+pad,oy+j*cs+pad,cs-2*pad,cs-2*pad); c.fill(); }
+  c.globalAlpha=1;
+}
+let heatIO=null;
+function heatAll(scope){
+  if(!heatIO) heatIO=new IntersectionObserver(es=>{ for(const e of es) if(e.isIntersecting){ heatIO.unobserve(e.target); drawHeat(e.target,e.target._h); } },{rootMargin:"200px"});
+  scope.querySelectorAll("canvas.heat").forEach(cv=>{ heatIO.observe(cv); });
+}
+themeHooks.push(()=>document.querySelectorAll("canvas.heat").forEach(cv=>{ if(cv.width>1) drawHeat(cv,cv._h); }));
+
+function sessCard(r){
+  const k=r.kills, st=[plural(k,"kill"), r.nm?plural(r.nm,"moment"):"", r.parries?plural(r.parries,"parry").replace("parrys","parries"):""].filter(Boolean);
+  return '<a class="card" href="#/s/'+esc(r.id)+'"><canvas class="heat" data-id="'+esc(r.id)+'" aria-hidden="true"></canvas><div class="cb">'+
+    '<div class="ct"><span class="t">'+esc(prettyMap(r.map))+'</span>'+modeBadge(r.mode)+'</div>'+
+    '<div class="cm num">'+esc(when(r.date))+' · '+esc(dur(r.dur))+' · '+plural(r.players.filter(p=>p.b!=="bot").length,"player")+'</div>'+
+    '<div class="cp">'+esc(names(r.players,4))+'</div><div class="cs num">'+st.map(esc).join("<span aria-hidden=true>·</span>")+'</div></div></a>';
+}
+function bindHeat(scope,rows){ const by={}; rows.forEach(r=>by[r.id]=r); scope.querySelectorAll("canvas.heat").forEach(cv=>cv._h=(by[cv.dataset.id]||{}).heat); heatAll(scope); }
+
+// ===== router
+let page=null;      // the current page's teardown
+function route(){
+  const h=location.hash.replace(/^#/,"")||"/", [path,qs]=h.split("?"), q=new URLSearchParams(qs||""), seg=path.split("/").filter(Boolean);
+  const r=seg[0]||"home";
+  if(r==="s"&&seg[1]&&page&&page.sid===seg[1]){ page.query(q); return; }      // the same session: only seek
+  if(page&&page.off) page.off(); page=null; endFs();
+  document.querySelectorAll("#nav a[data-r]").forEach(a=>a.setAttribute("aria-current",String(a.dataset.r===(r==="s"?"home":r==="p"?"players":r))==="true"?"page":"false"));
+  scrollTo(0,0);
+  if(r==="s"&&seg[1]) return sessionPage(seg[1],q);
+  if(r==="players") return playersPage();
+  if(r==="p"&&seg[1]) return playerPage(seg[1]);
+  if(r==="stats") return statsPage(seg[1]);
+  if(r==="about") return aboutPage();
+  return homePage(q);
+}
+addEventListener("hashchange",route);
+function fail(e){ app.innerHTML='<div class="empty">Could not load this page ('+esc(e&&e.message||e)+').</div>'; }
+
+// ===== home: featured moments, then the sessions
+const HS={q:"",map:"",mode:"",sort:"new",shown:24};
+async function homePage(){
+  document.title="Replays · cbot Fight Recordings";
+  let rows; try{ rows=await SESS(); }catch(e){ return fail(e); }
+  noteMaps(rows);
+  const hours=rows.reduce((a,r)=>a+r.dur,0)/3600, maps=[...new Set(rows.map(r=>r.map))].sort((a,b)=>prettyMap(a).localeCompare(prettyMap(b)));
+  // featured: the hand-picked replays and the best-scored moments, one per session, newest sessions first among equals
+  const newest=rows.reduce((a,r)=>r.date>a?r.date:a,""), age=r=>(new Date(newest)-new Date(r.date))/864e5;
+  const cand=[]; rows.forEach(r=>(r.tops||[]).forEach(m=>cand.push({r,m,v:(m.k==="pick"?40:0)+Math.min(m.score,60)-3*age(r)})));
+  cand.sort((a,b)=>b.v-a.v);
+  const picks=[], used=new Set(), kinds={}; for(const x of cand){ if(picks.length>=4) break; if(used.has(x.r.id)||(kinds[x.m.k]||0)>=2) continue; used.add(x.r.id); kinds[x.m.k]=(kinds[x.m.k]||0)+1; picks.push(x); }
+  app.innerHTML='<h1>Replays</h1><p class="lede num">'+plural(rows.length,"session")+' · '+hours.toFixed(1)+' hours of fights, recorded on the server'+(SITE&&SITE.range?' · '+esc(SITE.range):'')+'. Pick one and watch it whole, from any fighter\'s eyes.</p>'+
+    '<section class="sec"><h2>Featured moments</h2><div class="feat" id="feat">'+picks.map(({r,m})=>
+      '<a class="card" href="#/s/'+esc(r.id)+'?t='+m.t0+(m.pids&&m.pids.length?'&f='+m.pids[0]:'')+'"><canvas class="heat" data-id="'+esc(r.id)+'" aria-hidden="true"></canvas><span class="play">'+IC.play+'Watch</span><div class="cb">'+
+      '<div class="ct"><span class="t">'+esc(m.title)+'</span></div><div class="cm num">'+esc(prettyMap(r.map))+' · '+esc(when(r.date))+' · '+esc(dur(m.t1-m.t0))+'</div></div></a>').join("")+'</div></section>'+
+    '<section class="sec"><h2>All sessions</h2><div class="filters">'+
+      '<input type="search" id="fq" placeholder="Find a player…" aria-label="Find a player" value="'+esc(HS.q)+'">'+
+      '<select id="fmap" aria-label="Map"><option value="">All maps</option>'+maps.map(m=>'<option value="'+esc(m)+'"'+(m===HS.map?" selected":"")+'>'+esc(mapLabel(m))+'</option>').join("")+'</select>'+
+      '<div class="seg" id="fmode" role="group" aria-label="Mode">'+["","FFA","Skirmish","Other"].map(m=>'<button type="button" data-m="'+m+'" aria-pressed="'+(HS.mode===m)+'">'+(m||"All")+'</button>').join("")+'</div>'+
+      '<select id="fsort" aria-label="Sort"><option value="new">Newest</option><option value="kills">Most kills</option><option value="long">Longest</option><option value="players">Most players</option></select>'+
+      '<span class="count num" id="fcount"></span></div><div class="grid" id="sgrid"></div><button class="more" id="fmore" hidden>Show more</button></section>';
+  bindHeat($("feat"),rows);
+  $("fsort").value=HS.sort;
+  const draw=()=>{
+    const q=HS.q.trim().toLowerCase();
+    let L=rows.filter(r=>(!HS.map||r.map===HS.map)&&(!HS.mode||r.mode===HS.mode)&&(!q||r.players.some(p=>p.n.toLowerCase().includes(q))));
+    const S={new:(a,b)=>a.date<b.date?1:-1,kills:(a,b)=>b.kills-a.kills,long:(a,b)=>b.dur-a.dur,players:(a,b)=>b.players.length-a.players.length}[HS.sort];
+    L=L.slice().sort(S);
+    $("fcount").textContent=L.length===rows.length?plural(rows.length,"session"):L.length+" of "+rows.length;
+    $("sgrid").innerHTML=L.length?L.slice(0,HS.shown).map(sessCard).join(""):'<div class="empty">No session matches.</div>';
+    $("fmore").hidden=L.length<=HS.shown; bindHeat($("sgrid"),rows);
+  };
+  $("fq").oninput=e=>{HS.q=e.target.value;HS.shown=24;draw();};
+  $("fmap").onchange=e=>{HS.map=e.target.value;HS.shown=24;draw();};
+  $("fsort").onchange=e=>{HS.sort=e.target.value;draw();};
+  $("fmode").onclick=e=>{const b=e.target.closest("button");if(!b)return;HS.mode=b.dataset.m;HS.shown=24;$("fmode").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));draw();};
+  $("fmore").onclick=()=>{HS.shown+=48;draw();};
+  draw();
+}
+
+// ===== a session: moments, the whole-session timeline, the viewer
+const tip=$("tip");
+function showTip(html,ev){ tip.innerHTML=html; tip.style.opacity=1; const w=tip.offsetWidth; let x=ev.clientX+12; if(x+w>innerWidth-6) x=ev.clientX-w-12; tip.style.left=Math.max(6,x)+"px"; tip.style.top=(ev.clientY+16)+"px"; }
+const hideTip=()=>{ tip.style.opacity=0; };
+function toast(t){ const e=$("toast"); e.textContent=t; e.style.opacity=1; clearTimeout(e._t); e._t=setTimeout(()=>e.style.opacity=0,1800); }
+
+// part downloads the session page starts for its viewer frames (watch.html takes them from parent.__mdPre: url -> Promise of the bytes), so a part
+// downloads while the viewer's own page loads instead of after it; the last 4 are kept
+const PRE=window.__mdPre=new Map();
+function prefetch(u){
+  if(PRE.has(u)){ const v=PRE.get(u); PRE.delete(u); PRE.set(u,v); return; }
+  const P=fetch(u).then(r=>{ if(!r.ok) throw new Error(r.status+" "+u); return r.arrayBuffer(); });
+  P.catch(()=>{ if(PRE.get(u)===P) PRE.delete(u); });
+  PRE.set(u,P); while(PRE.size>4) PRE.delete(PRE.keys().next().value);
+}
+
+async function sessionPage(sid,q){
+  app.innerHTML='<p class="loading">Loading the session…</p>';
+  let S; try{ S=await getJSON("data/"+sid+"/session.json"); }catch(e){ return fail(e); }
+  document.title=prettyMap(S.map)+", "+when(S.date)+" · cbot Fight Recordings";
+  const byPid={}; S.players.forEach(p=>byPid[p.pid]=p);
+  const humans=S.players.filter(p=>p.b!=="bot");
+  const nk=S.kills.filter(k=>k.a!=null&&k.a!==k.v).length;
+  const moms=S.moments.slice().sort((a,b)=>a.t0-b.t0);
+  app.innerHTML='<a class="crumb" href="#/">← All replays</a>'+
+    '<div class="shead"><div class="grow"><h1>'+esc(prettyMap(S.map))+' '+modeBadge(S.mode)+'</h1><p class="lede num">'+esc(when(S.date,true))+' · '+esc(dur(S.dur))+' · '+plural(humans.length,"player")+' · '+plural(nk,"kill")+(S.rounds.length?' · '+plural(S.rounds.length,"round"):'')+'</p></div>'+
+    '<button class="btn" id="share">'+IC.share+'Copy link to this moment</button></div>'+
+    (moms.length?'<div class="moms" id="moms" aria-label="Moments">'+moms.map((m,i)=>'<button class="mom" data-i="'+i+'"><b>'+esc(m.title)+'</b><span class="num"><i style="background:'+kc(m.k)+'"></i>'+esc(KNAME[m.k]||m.k)+' · '+clock(m.t0)+' · '+esc(dur(m.t1-m.t0))+'</span></button>').join("")+'</div>':'')+
+    '<div class="tlw"><canvas id="stl" aria-label="The whole session: one lane per fighter, kills, moments. Click to jump there."></canvas><div class="tlk" id="tlk"></div></div><div class="score" id="score" aria-live="off"></div>'+
+    '<div class="vstage" id="vstage"><div class="vload" id="vload">Loading…</div></div>';
+  $("tlk").innerHTML=Object.keys(KNAME).filter(k=>moms.some(m=>m.k===k)).map(k=>'<span><i style="background:'+kc(k)+'"></i>'+KNAME[k]+'</span>').join("")+
+    '<span><i style="background:'+cssv("--destructive")+';border-radius:50%"></i>Kill</span><span class="muted">Click a name to follow that fighter</span>';
+  // ---- player state
+  const V={sid,S,i:-1,t:0,pid:null,cam:"top",speed:1,playing:true,frames:[],act:null,urlAt:0};
+  const stage=$("vstage"), vload=$("vload");
+  for(let k=0;k<2;k++){ const f=document.createElement("iframe"); f.className="off"; f.setAttribute("allow","fullscreen; autoplay"); f.title="Replay viewer"; f.setAttribute("scrolling","no"); stage.appendChild(f); V.frames.push(f); }
+  const partAt=t=>{ let i=S.parts.findIndex(p=>t>=p.t0&&t<p.t1); if(i<0) i=S.parts.findIndex(p=>p.t0>=t); if(i<0) i=S.parts.length-1; return i; };
+  // a part's file: the binary one (pages_site/binpack.py) where the build made them; the download starts here, beside the viewer's own page
+  const segUrl=i=>"data/"+sid+"/"+(SITE&&SITE.bin?S.parts[i].f.replace(/\.json$/,".bin"):S.parts[i].f);
+  function hashOf(i,tl,o){      // the viewer's address for part i at tl
+    const pt=S.parts[i], fi=o.pid!=null?pt.pids.indexOf(o.pid):-1;
+    prefetch(segUrl(i));
+    let h=themeKey+"&seg="+encodeURIComponent(segUrl(i))+"&start="+Math.max(0,tl).toFixed(2);
+    if(fi>=0){ h+="&follow="+fi; if(o.cam&&o.cam!=="top") h+="&cam="+o.cam; }
+    if(o.speed&&o.speed!==1) h+="&speed="+o.speed;
+    if(!o.play) h+="&paused=1";
+    return h;
+  }
+  const src=(i,tl,o)=>"watch.html#"+hashOf(i,tl,o);
+  const other=f=>V.frames[0]===f?V.frames[1]:V.frames[0];
+  // The hidden frame waits as a standby viewer (watch.html with no part: its page and script loaded, ahead of time), so opening a part there
+  // skips loading the page: about half of a jump's time (measured). f._sb: it is waiting; f._part -1: no part asked of it.
+  function openIn(f,i,tl){ const o={pid:V.pid,cam:V.cam,speed:V.speed,play:false}; f._o=o;
+    if(f._sb){ f._sb=false; post(f,{mdCmd:"open",h:hashOf(i,tl,o)}); } else f.src=src(i,tl,o); }
+  function standby(f){ f._part=-1; f._ready=false; f._sb=false; f._want=null; f.src="watch.html#"+themeKey+"&standby=1"; }
+  function standbyLater(f){ clearTimeout(V.sbT); V.sbT=setTimeout(()=>{ if(f!==V.act&&!(f._part>=0)&&!f._sb&&V.frames.includes(f)) standby(f); },1200); }      // after the jump's own start-up
+  function load(i,tl,play){      // open part i at tl (s into the part) in the hidden frame; it shows when it is ready
+    const f=V.act?other(V.act):V.frames[0];
+    f._part=i; f._ready=false; f._want={jump:true,play}; openIn(f,i,tl);
+    vload.hidden=false; vload.textContent="Loading "+clock(S.parts[i].t0+tl)+"…";
+  }
+  function preload(i){ const f=other(V.act); if(f._part===i||(f._want&&f._want.jump&&!f._ready&&f._part>=0)) return; f._part=i; f._ready=false; f._want={jump:false}; openIn(f,i,0); }
+  function post(f,m){ try{ f.contentWindow.postMessage(m,"*"); }catch(e){} }
+  function swap(f,play){
+    const old=V.act; V.act=f; V.i=f._part; f.classList.remove("off"); if(old&&old!==f){ old.classList.add("off"); old._part=-1; old._ready=false; old._sb=false; old.src="about:blank"; }
+    { const g=other(f); if(g._part==null||g._part<0) standbyLater(g); }
+    const pt=S.parts[V.i], fi=V.pid!=null?pt.pids.indexOf(V.pid):-1, o=f._o||{};
+    if(o.pid!==V.pid||o.cam!==V.cam) post(f,{mdCmd:"follow",p:fi,cam:fi>=0?V.cam:"top"});
+    if(o.speed!==V.speed) post(f,{mdCmd:"speed",v:V.speed});
+    if(play) post(f,{mdCmd:"play"});
+    vload.hidden=true; drawTL();
+  }
+  function seekTo(t,play){
+    t=Math.max(0,Math.min(S.dur-0.05,t)); const i=partAt(t), pt=S.parts[i], tl=Math.max(0,t-pt.t0);
+    V.t=pt.t0+tl; if(play!=null) V.playing=play;
+    if(V.act&&V.i===i&&V.act._ready){ post(V.act,{mdCmd:"seek",t:tl,play:V.playing}); drawTL(); return; }
+    load(i,tl,V.playing); drawTL();
+  }
+  function onMsg(ev){
+    const d=ev.data; if(!d) return; const f=V.frames.find(x=>x.contentWindow===ev.source); if(!f) return;
+    if(typeof d.mdFullscreen==="boolean"){ d.mdFullscreen?startFs(f):endFs(f); return; }
+    if(d.mdHost==="height"&&d.h>0){ if(f!==fsFrame){ f.style.height=Math.min(Math.max(d.h,300),6000)+"px"; } return; }
+    if(typeof d.mdFrameHeight==="number") return;      // the theme bootstrap's report: the viewer sends its own (mdHost "height")
+    if(d.mdHost==="standby"){ if(f._part===-1) f._sb=true; return; }      // (one sent just before the frame was given a part is late: ignored)
+    if(d.mdHost==="ready"){ f._ready=true; if(f._want&&f._want.jump) swap(f,f._want.play); return; }
+    if(d.mdHost==="error"){ if(f._want&&f._want.jump){ vload.hidden=false; vload.textContent="This part could not be loaded."; } return; }
+    if(f!==V.act) return;
+    if(d.mdHost==="state"){
+      const pt=S.parts[V.i]; V.t=pt.t0+d.t; V.playing=d.playing; V.speed=d.speed;
+      // the followed fighter sticks while they are away (left, or not yet joined): only a choice in the viewer changes it
+      if(d.follow>=0){ V.pid=pt.pids[d.follow]; V.cam=d.cam; } else if(V.pid==null||pt.pids.includes(V.pid)){ V.pid=null; V.cam="top"; }
+      if(V.i+1<S.parts.length&&pt.t1-V.t<25) preload(V.i+1);
+      drawTL(); markMom();
+      const now=performance.now(); if(now-V.urlAt>1500){ V.urlAt=now; history.replaceState(null,"",shareUrl()); }
+    } else if(d.mdHost==="end"){
+      const n=V.i+1; if(n>=S.parts.length) return;
+      const g=other(f); if(g._part===n&&g._ready) swap(g,true); else if(g._part===n){ g._want={jump:true,play:true}; vload.hidden=false; vload.textContent="Loading…"; } else load(n,0,true);
+    }
+  }
+  addEventListener("message",onMsg);
+  function shareUrl(){ let u="#/s/"+sid+"?t="+Math.floor(V.t); if(V.pid!=null){ u+="&f="+V.pid; if(V.cam!=="top") u+="&cam="+V.cam; } return u; }
+  $("share").onclick=async()=>{ const u=location.href.split("#")[0]+shareUrl(); try{ await navigator.clipboard.writeText(u); toast("Link copied"); }catch(e){ prompt("Copy this link",u); } };
+  // ---- moments
+  function markMom(){ const el=$("moms"); if(!el) return; el.querySelectorAll(".mom").forEach(b=>{ const m=moms[+b.dataset.i]; b.classList.toggle("cur",V.t>=m.t0&&V.t<m.t1); }); }
+  if($("moms")) $("moms").onclick=e=>{ const b=e.target.closest(".mom"); if(!b) return; const m=moms[+b.dataset.i];
+    if(m.pids&&m.pids.length&&byPid[m.pids[0]]) V.pid=m.pids[0]; seekTo(m.t0,true); };
+  // ---- the timeline
+  const cv=$("stl"), ctx=cv.getContext("2d"); let TW=0,TH=0,LX=0,LANE=0,TOP=0;
+  const lanes=S.players.filter(p=>p.b!=="bot"||S.players.length<=12);
+  function layout(){ const r=cv.getBoundingClientRect(), dpr=devicePixelRatio||1; TW=r.width; LANE=lanes.length>14?7:lanes.length>8?10:13; TOP=16; TH=TOP+lanes.length*LANE+16;
+    cv.style.height=TH+"px"; cv.width=Math.round(TW*dpr); cv.height=Math.round(TH*dpr); ctx.setTransform(dpr,0,0,dpr,0,0); LX=Math.min(130,Math.max(70,TW*0.12)); }
+  const X=t=>LX+(TW-LX-6)*Math.min(1,Math.max(0,t/S.dur)), T=x=>Math.min(S.dur,Math.max(0,(x-LX)/(TW-LX-6)*S.dur));
+  let TLC=null; const tc=n=>{ if(!TLC) TLC={}; return n in TLC?TLC[n]:(TLC[n]=cssv(n)); };      // the timeline's colours, read once per theme (getComputedStyle on every draw was the cost)
+  function drawTL(){
+    if(!TW) layout(); const c=ctx, fg=tc("--foreground"), mu=tc("--muted-foreground"), bd=tc("--border");
+    c.clearRect(0,0,TW,TH); c.font="11px "+tc("--font-sans"); c.textBaseline="middle";
+    // rounds
+    S.rounds.forEach((r,i)=>{ c.fillStyle=tc("--muted"); if(i%2===0){ c.fillRect(X(r.t0),TOP-2,X(r.t1)-X(r.t0),lanes.length*LANE+4); } });
+    // moments band
+    for(const m of moms){ c.fillStyle=tc(KCOL[m.k]||"--muted-foreground"); c.globalAlpha=0.85; const x0=X(m.t0), x1=Math.max(x0+3,X(m.t1)); c.beginPath(); c.roundRect?c.roundRect(x0,2,x1-x0,8,3):c.rect(x0,2,x1-x0,8); c.fill(); }
+    c.globalAlpha=1;
+    // lanes
+    lanes.forEach((p,j)=>{ const y=TOP+j*LANE, col=tc("--"+p.col)||fg, sel=V.pid===p.pid;
+      c.fillStyle=sel?fg:mu; c.font=(sel?"600 ":"")+"11px "+tc("--font-sans"); let nm=p.n; while(c.measureText(nm).width>LX-12&&nm.length>3) nm=nm.slice(0,-2)+"…"; c.fillText(nm,0,y+LANE/2);
+      c.fillStyle=col; c.globalAlpha=sel?1:0.75; for(const [a,b] of p.lane){ const x0=X(a), w=Math.max(1,X(b)-x0); c.fillRect(x0,y+LANE*0.2,w,LANE*0.6); } c.globalAlpha=1; });
+    // kills: a dot on the victim's lane
+    const li={}; lanes.forEach((p,j)=>li[p.pid]=j); c.fillStyle=tc("--destructive");
+    for(const k of S.kills){ const j=li[k.v]; if(j==null) continue; c.beginPath(); c.arc(X(k.t),TOP+j*LANE+LANE/2,Math.max(2,LANE*0.28),0,7); c.fill(); }
+    // the part loaded, the playhead
+    c.strokeStyle=bd; c.lineWidth=1; c.beginPath(); c.moveTo(LX,TH-6.5); c.lineTo(TW-6,TH-6.5); c.stroke();
+    if(V.i>=0){ const pt=S.parts[V.i]; c.strokeStyle=tc("--accent"); c.globalAlpha=0.35; c.lineWidth=3; c.beginPath(); c.moveTo(X(pt.t0),TH-6.5); c.lineTo(X(pt.t1),TH-6.5); c.stroke(); c.globalAlpha=1; }
+    const x=X(V.t); c.strokeStyle=tc("--accent"); c.lineWidth=2; c.beginPath(); c.moveTo(x,0); c.lineTo(x,TH-2); c.stroke();
+    c.fillStyle=tc("--accent"); c.beginPath(); c.arc(x,TH-6.5,4,0,7); c.fill();
+    c.fillStyle=mu; c.font="10.5px "+tc("--font-sans"); c.textAlign="right"; c.fillText(clock(V.t)+" / "+clock(S.dur),LX-8,TH-6.5); c.textAlign="left";
+    score();
+  }
+  // the scoreboard so far: kills and deaths up to the playhead, the humans and cbot (most kills first)
+  let scKey="";
+  function score(){
+    const K={},D={}; for(const k of S.kills){ if(k.t>V.t) continue; if(k.v!=null) D[k.v]=(D[k.v]||0)+1; if(k.a!=null&&k.a!==k.v) K[k.a]=(K[k.a]||0)+1; }
+    const L=S.players.filter(p=>p.b!=="bot").map(p=>({p,k:K[p.pid]||0,d:D[p.pid]||0})).sort((a,b)=>b.k-a.k||a.d-b.d);
+    const key=L.map(x=>x.p.pid+":"+x.k+":"+x.d).join(",")+"|"+V.pid; if(key===scKey) return; scKey=key;
+    $("score").innerHTML='<span class="sl">Score so far (kills – deaths)</span>'+L.map(x=>'<span class="sp"'+(x.p.pid===V.pid?' style="border-color:var(--accent)"':'')+'><i style="background:var(--'+esc(x.p.col)+')"></i>'+esc(x.p.n||"?")+' <b>'+x.k+' – '+x.d+'</b></span>').join("");
+  }
+  function hitTest(ev){ const r=cv.getBoundingClientRect(), x=ev.clientX-r.left, y=ev.clientY-r.top; return {x,y,t:T(x),lane:Math.floor((y-TOP)/LANE)}; }
+  let drag=false;
+  cv.addEventListener("pointerdown",ev=>{ const h=hitTest(ev); if(h.x<LX){ const p=lanes[h.lane]; if(p&&h.y>=TOP){ V.pid=V.pid===p.pid?null:p.pid; if(V.act){ const pt=S.parts[V.i], fi=V.pid!=null?pt.pids.indexOf(V.pid):-1; post(V.act,{mdCmd:"follow",p:fi,cam:V.cam}); } drawTL(); } return; }
+    drag=true; cv.setPointerCapture(ev.pointerId); V.t=h.t; drawTL(); });
+  cv.addEventListener("pointermove",ev=>{ const h=hitTest(ev);
+    if(drag){ V.t=h.t; drawTL(); return; }
+    if(h.x<LX){ const p=lanes[h.lane]; if(p&&h.y>=TOP){ const st=p.st||{}; showTip('<b>'+esc(p.n)+'</b> ('+esc(p.b)+')<br>'+(st.kills||0)+' kills · '+(st.deaths||0)+' deaths · '+(st.hits||0)+' hits<br><span class=muted>Click to follow</span>',ev); cv.style.cursor="pointer"; } else hideTip(); return; }
+    cv.style.cursor="pointer";
+    let html='<b class=num>'+clock(h.t)+'</b>';
+    const near=S.kills.filter(k=>Math.abs(X(k.t)-h.x)<5); for(const k of near.slice(0,3)) html+='<br>'+(k.a!=null&&byPid[k.a]&&k.a!==k.v?esc(byPid[k.a].n)+' kills ':'')+esc((byPid[k.v]||{}).n||"?")+(k.a==null||k.a===k.v?' dies':'');
+    if(h.y<TOP){ const m=moms.find(m=>h.x>=X(m.t0)-2&&h.x<=Math.max(X(m.t0)+3,X(m.t1))+2); if(m) html+='<br>'+esc(m.title); }
+    showTip(html,ev); });
+  cv.addEventListener("pointerup",ev=>{ if(!drag) return; drag=false; const h=hitTest(ev); if(h.y<TOP){ const m=moms.find(m=>h.x>=X(m.t0)-2&&h.x<=Math.max(X(m.t0)+3,X(m.t1))+2); if(m){ if(m.pids&&m.pids.length) V.pid=m.pids[0]; seekTo(m.t0,true); return; } } seekTo(h.t,null); });
+  cv.addEventListener("pointerleave",hideTip);
+  const ro=new ResizeObserver(()=>{ layout(); drawTL(); }); ro.observe(cv);
+  // a theme change: the playing viewer recolours itself (no reload); a frame still loading is loaded again with the new theme in its address
+  const reTheme=()=>{ TLC=null; drawTL();
+    for(const f of V.frames){ if(f._part==null||f._part<0) continue;
+      if(f._ready) post(f,{mdTheme:themeKey});
+      else { const tl=f===V.act?V.t-S.parts[f._part].t0:0; f._ready=false; f.src=src(f._part,Math.max(0,tl),{pid:V.pid,cam:V.cam,speed:V.speed,play:false}); } } };
+  themeHooks.push(reTheme);
+  // ---- start
+  function fromQuery(q){ const t=parseFloat(q.get("t")), f=parseInt(q.get("f"),10), cam=q.get("cam");
+    if(isFinite(f)&&byPid[f]) V.pid=f; if(["fp","tp","fc"].includes(cam)) V.cam=cam; return isFinite(t)?t:(S.parts[0]?S.parts[0].t0:0); }
+  layout(); seekTo(fromQuery(q),true);
+  window.__site={V,seekTo,parts:S.parts};      // test hook
+  page={sid,query(q){ seekTo(fromQuery(q),true); },off(){ removeEventListener("message",onMsg); ro.disconnect(); const k=themeHooks.indexOf(reTheme); if(k>=0) themeHooks.splice(k,1); clearTimeout(V.sbT); V.frames.forEach(f=>f.src="about:blank"); PRE.clear(); hideTip(); }};
+}
+
+// pseudo-fullscreen for the viewer frame (the page asks {mdFullscreen:true} when the browser's own cannot be used)
+let fsFrame=null,fsY=0,fsH="";
+function startFs(f){ if(fsFrame===f) return; endFs(); fsFrame=f; fsY=scrollY; fsH=f.style.height; f.classList.add("fsframe"); root.classList.add("fslock"); }
+function endFs(f){ if(!fsFrame||(f&&f!==fsFrame)) return; const g=fsFrame; fsFrame=null; g.classList.remove("fsframe"); root.classList.remove("fslock"); g.style.height=fsH; scrollTo(0,fsY); }
+addEventListener("keydown",ev=>{ if(ev.key!=="Escape"||!fsFrame) return; const g=fsFrame; endFs(); try{ g.contentWindow.postMessage({mdFsExit:true},"*"); }catch(e){} });
+
+// ===== players
+const PS={q:"",sort:"alive_s",dir:-1};
+const kd=(k,d)=>d?(k/d).toFixed(2):k?"∞":"–";
+async function playersPage(){
+  document.title="Players · cbot Fight Recordings";
+  let L; try{ L=await PLAY(); }catch(e){ return fail(e); }
+  const cols=[["n","Player"],["sessions","Sessions"],["alive_s","Time fighting"],["kills","Kills"],["deaths","Deaths"],["kd","K/D"],["kdh","K/D vs humans"],["hits","Hits"],["parries","Parries"]];
+  const val=(p,k)=>k==="n"?p.n.toLowerCase():k==="sessions"?p.sessions.length:k==="kd"?(p.st.deaths?(p.st.kills||0)/p.st.deaths:(p.st.kills||0)):k==="kdh"?(p.st.deaths_h?(p.st.kills_h||0)/p.st.deaths_h:(p.st.kills_h||0)):(p.st[k]||0);
+  app.innerHTML='<h1>Players</h1><p class="lede">'+plural(L.filter(p=>p.b==="human").length,"human")+' and cbot, over every recorded session. Kills and deaths are rebuilt from the recordings; K/D vs humans counts only fights between two people.</p>'+
+    '<div class="filters sec"><input type="search" id="pq" placeholder="Find a player…" aria-label="Find a player" value="'+esc(PS.q)+'"><span class="count num" id="pcount"></span></div><div class="tw"><table class="pt"><thead><tr>'+
+    cols.map(([k,l])=>'<th data-k="'+k+'" scope="col">'+l+'</th>').join("")+'</tr></thead><tbody id="pbody"></tbody></table></div>';
+  const draw=()=>{ const q=PS.q.trim().toLowerCase(); let R=L.filter(p=>!q||p.names.some(n=>n.toLowerCase().includes(q)));
+    R=R.slice().sort((a,b)=>{ const x=val(a,PS.sort), y=val(b,PS.sort); return (x<y?-1:x>y?1:0)*PS.dir; });
+    $("pcount").textContent=R.length+" of "+L.length;
+    document.querySelectorAll(".pt th").forEach(th=>{ if(th.dataset.k===PS.sort) th.setAttribute("aria-sort",PS.dir<0?"descending":"ascending"); else th.removeAttribute("aria-sort"); th.textContent=cols.find(c=>c[0]===th.dataset.k)[1]+(th.dataset.k===PS.sort?(PS.dir<0?" ↓":" ↑"):""); });
+    $("pbody").innerHTML=R.map(p=>'<tr data-k="'+esc(p.k)+'"><td><a href="#/p/'+esc(p.k)+'">'+esc(p.n)+'</a>'+(p.b==="cbot"?' <span class="badge">bot</span>':'')+'</td><td class="num">'+p.sessions.length+'</td><td class="num">'+dur(p.st.alive_s||0)+'</td><td class="num">'+(p.st.kills||0)+'</td><td class="num">'+(p.st.deaths||0)+'</td><td class="num">'+kd(p.st.kills||0,p.st.deaths||0)+'</td><td class="num">'+kd(p.st.kills_h||0,p.st.deaths_h||0)+'</td><td class="num">'+(p.st.hits||0)+'</td><td class="num">'+(p.st.parries||0)+'</td></tr>').join(""); };
+  document.querySelector(".pt thead").onclick=e=>{ const th=e.target.closest("th"); if(!th) return; const k=th.dataset.k; if(PS.sort===k) PS.dir=-PS.dir; else { PS.sort=k; PS.dir=k==="n"?1:-1; } draw(); };
+  $("pbody").onclick=e=>{ const tr=e.target.closest("tr"); if(tr&&!e.target.closest("a")) location.hash="#/p/"+tr.dataset.k; };
+  $("pq").oninput=e=>{ PS.q=e.target.value; draw(); };
+  draw();
+}
+async function playerPage(k){
+  let L,R; try{ [L,R]=await Promise.all([PLAY(),SESS()]); }catch(e){ return fail(e); }
+  const p=L.find(x=>x.k===k); if(!p){ app.innerHTML='<a class="crumb" href="#/players">← Players</a><div class="empty sec">No such player.</div>'; return; }
+  document.title=p.n+" · cbot Fight Recordings";
+  const st=p.st, rows=R.filter(r=>p.sessions.includes(r.id)), wt=Object.entries(p.weapons), wmax=Math.max(1,...wt.map(w=>w[1]));
+  const tiles=[[p.sessions.length,"sessions"],[dur(st.alive_s||0),"fighting"],[st.kills||0,"kills"],[st.deaths||0,"deaths"],[kd(st.kills||0,st.deaths||0),"K/D"],[kd(st.kills_h||0,st.deaths_h||0),"K/D vs humans"],[st.hits||0,"hits landed"],[st.parries||0,"parries"],[st.chambers||0,"chambers"]];
+  app.innerHTML='<a class="crumb" href="#/players">← Players</a><div class="shead"><div class="grow"><h1>'+esc(p.n)+(p.b==="cbot"?' <span class="badge">bot</span>':'')+'</h1>'+
+    (p.names.length>1?'<p class="lede">Also seen as '+p.names.filter(n=>n!==p.n).map(esc).join(", ")+'</p>':'')+'</div></div>'+
+    '<div class="tiles">'+tiles.map(([v,l])=>'<div class="tile"><b>'+esc(v)+'</b><span>'+l+'</span></div>').join("")+'</div>'+
+    '<div class="two sec"><section><h2>Best moments</h2>'+(p.moments.length?'<div class="mlist">'+p.moments.map(m=>'<a class="mrow" href="#/s/'+esc(m.s)+'?t='+m.t0+'&f='+m.p+'"><i style="background:'+kc(m.k)+'"></i><b>'+esc(m.title)+'</b><span class="num">'+esc(prettyMap(m.map))+' · '+esc(dur(m.t1-m.t0))+'</span></a>').join("")+'</div>':'<p class="muted">None found yet.</p>')+'</section>'+
+    '<section><h2>Weapons</h2>'+(wt.length?'<div class="bars">'+wt.map(([w,s])=>'<div class="brow"><span>'+esc(w)+'</span><div class="tr"><i style="width:'+(100*s/wmax).toFixed(1)+'%"></i></div><span class="v">'+hrs(s)+'</span></div>').join("")+'</div>':'<p class="muted">No weapon time recorded.</p>')+'</section></div>'+
+    '<section class="sec"><h2>Sessions</h2><div class="grid" id="pgrid">'+rows.map(sessCard).join("")+'</div></section>';
+  bindHeat($("pgrid"),R);
+}
+
+// ===== stats: summaries in plain words, then every stats page
+async function statsPage(id){
+  if(id){ const s=STATS.find(x=>x.id===id); if(!s) return fail("no such page");
+    document.title=s.label+" · cbot Fight Recordings";
+    app.innerHTML='<a class="crumb" href="#/stats">← Stats</a><div class="shead"><div class="grow"><h1>'+esc(s.label)+'</h1><p class="lede">'+esc(s.blurb)+'</p></div></div><iframe class="sframe" id="sf" title="'+esc(s.label)+'" scrolling="no"></iframe>';
+    const f=$("sf"); f.src="stats/"+s.id+".html#"+themeKey;
+    const on=ev=>{ if(ev.source!==f.contentWindow||!ev.data) return; if(typeof ev.data.mdFrameHeight==="number"&&ev.data.mdFrameHeight>0) f.style.height=Math.min(Math.max(ev.data.mdFrameHeight,200),9000)+"px"; };
+    addEventListener("message",on); const re=()=>{ f.src="stats/"+s.id+".html#"+themeKey; }; themeHooks.push(re);
+    page={off(){ removeEventListener("message",on); const k=themeHooks.indexOf(re); if(k>=0) themeHooks.splice(k,1); }}; return; }
+  document.title="Stats · cbot Fight Recordings";
+  let R,L; try{ [R,L]=await Promise.all([SESS(),PLAY()]); }catch(e){ return fail(e); }
+  noteMaps(R);
+  const hours=R.reduce((a,r)=>a+r.dur,0)/3600, kills=R.reduce((a,r)=>a+r.kills,0), parries=R.reduce((a,r)=>a+r.parries,0), hum=L.filter(p=>p.b==="human");
+  const W={}; hum.forEach(p=>{ for(const [w,s] of Object.entries(p.weapons)) W[w]=(W[w]||0)+s; }); const wt=Object.entries(W).sort((a,b)=>b[1]-a[1]).slice(0,8), wmax=Math.max(1,...wt.map(x=>x[1]));
+  const lead=hum.filter(p=>(p.st.kills_h||0)>=15).map(p=>[p,(p.st.kills_h||0)/Math.max(1,p.st.deaths_h||0)]).sort((a,b)=>b[1]-a[1]).slice(0,8), lmax=Math.max(1,...lead.map(x=>x[1]));
+  const M={}; R.forEach(r=>M[r.map]=(M[r.map]||0)+r.dur); const mt=Object.entries(M).sort((a,b)=>b[1]-a[1]).slice(0,8), mmax=Math.max(1,...mt.map(x=>x[1]));
+  const groups=[]; STATS.forEach(s=>{ let g=groups.find(x=>x.g===s.group); if(!g) groups.push(g={g:s.group,items:[]}); g.items.push(s); });
+  const bar=(l,v,mx,txt,href)=>'<div class="brow"><span>'+(href?'<a href="'+href+'">'+esc(l)+'</a>':esc(l))+'</span><div class="tr"><i style="width:'+(100*v/mx).toFixed(1)+'%"></i></div><span class="v">'+esc(txt)+'</span></div>';
+  app.innerHTML='<h1>Stats</h1><p class="lede">The short version first. Every chart the recordings feed is under All stats.</p>'+
+    '<div class="tiles sec">'+[[R.length,"sessions"],[hours.toFixed(1)+" h","of fights"],[hum.length,"humans"],[kills,"kills"],[parries,"parries"]].map(([v,l])=>'<div class="tile"><b class="num">'+esc(v)+'</b><span>'+l+'</span></div>').join("")+'</div>'+
+    '<div class="two sec"><section><h2>Most-used weapons</h2><p class="muted" style="margin:-6px 0 10px;font-size:12.5px">Time humans spent holding each one.</p><div class="bars">'+wt.map(([w,s])=>bar(w,s,wmax,hrs(s))).join("")+'</div></section>'+
+    '<section><h2>K/D against humans</h2><p class="muted" style="margin:-6px 0 10px;font-size:12.5px">Players with 15 or more kills on humans.</p><div class="bars">'+lead.map(([p,v])=>bar(p.n,v,lmax,v.toFixed(2),"#/p/"+encodeURIComponent(p.k))).join("")+'</div></section>'+
+    '<section><h2>Maps</h2><p class="muted" style="margin:-6px 0 10px;font-size:12.5px">Hours recorded on each.</p><div class="bars">'+mt.map(([m,s])=>bar(mapLabel(m),s,mmax,(s/3600).toFixed(1)+" h")).join("")+'</div></section></div>'+
+    '<section class="sec"><h2>All stats</h2>'+groups.map(g=>'<h3 class="muted" style="font-size:12.5px;font-weight:600;margin:16px 0 8px">'+esc(g.g)+'</h3><div class="sgrid">'+g.items.map(s=>'<a class="sc" href="#/stats/'+esc(s.id)+'"><b>'+esc(s.label)+'</b><span>'+esc(s.blurb)+'</span></a>').join("")+'</div>').join("")+'</section>';
+}
+function aboutPage(){
+  document.title="About · cbot Fight Recordings";
+  app.innerHTML='<div class="notes"><h1>About</h1><p>These are recordings of real fights on the server, read straight from the game: every fighter\'s bones, swings, parries and hits, about 125 times a second. A replay is drawn from that data, so you can watch any fight from above, follow a player, or see through their eyes.</p>'+
+    '<h3>Watching</h3><ul><li><b>Pick a session</b> on Replays, or a moment (a duel, a gank, a multi-kill) to jump straight to it.</li><li><b>The timeline</b> under the moments shows the whole session: one lane per player, a red dot where someone died. Click anywhere to jump there; click a name to follow that player.</li><li><b>In the viewer</b>, the buttons switch between the view from above, first person, third person and a free camera. The cog holds the rest: speed, hitboxes, weapon trails, labels.</li><li><b>Copy link to this moment</b> gives a link that opens the same time, player and camera.</li></ul></div>'+
+    '<div class="sec">'+$("notes-t").innerHTML+'</div>';
+}
+route();
+</script></body></html>
